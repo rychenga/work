@@ -103,6 +103,7 @@ GROUP BY T1.NAME
 //list 一維陣列
 public List<string> columns = new List<string>();
 private List<string> _tempRows = new List<string>();
+
 //list 二維陣列
 public List<List<string>> rows = new List<List <string>>();
 
