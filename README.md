@@ -4,6 +4,7 @@ work log
 平常學習及工作日誌
 ----------------------------------------------
 --2018/03/26
+--[oracle]
 http://127.0.0.1:8080/apex/f?p=4950:1:2429849603166661
 --------------------------------------------------------------------------
 CREATE TABLESPACE TBS
@@ -96,3 +97,27 @@ AND T1.NAME IN (
 )
 GROUP BY T1.NAME
 ;
+--------------------------------------------------------------------------
+--2018/03/30
+--〔c#〕
+//list 一維陣列
+public List<string> columns = new List<string>();
+private List<string> _tempRows = new List<string>();
+//list 二維陣列
+public List<List<string>> rows = new List<List <string>>();
+
+//get rowdata by 2 Array
+foreach (System.Data.DataRow pri in GetDataTable.Rows)
+{    
+    _tempRows = new List<string>();
+
+    foreach (System.Data.DataColumn col in GetDataTable.Columns)
+    {
+        //Console.WriteLine("{0}:{1}", col, pri[col]);
+        _tempRows.Add(pri[col].ToString());
+    }
+    rows.Add(_tempRows);
+}
+
+
+ 
