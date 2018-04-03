@@ -128,7 +128,7 @@ namespace demo
         {
               //Test 就是class(複數種類集合的資料型態)
               //go 就是物件(object)
-              Test go = new Test();
+              Test go = new Test(); //new 實體化
         }
     }
 }
