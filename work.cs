@@ -115,3 +115,18 @@ foreach (System.Data.DataRow pri in GetDataTable.Rows)
     }
     rows.Add(_tempRows);
 }
+--2018/04/03
+ //class
+namespace demo
+{
+    class Test
+    {
+    }
+    class Program
+    {
+     //Test 就是class(複數種類集合的資料型態)
+     //go 就是物件(object)
+     Test go = new Test();
+     
+    }
+}
