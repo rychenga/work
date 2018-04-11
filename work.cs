@@ -132,3 +132,33 @@ namespace demo
         }
     }
 }
+--------------------------------------------------------------------------
+--2018/04/11
+--〔c#〕
+//方法一
+while (true)
+{
+    Console.WriteLine("Input number (input -1 and complete):");
+
+    int _iPut = Convert.ToInt32(Console.ReadLine());
+
+    if (_iPut < 0 || _iPut > 255) break;
+
+    byte _bPut = Convert.ToByte(_iPut);
+
+    _lInput.Add(_bPut);
+}
+//方法2
+while (true)
+{
+    Console.WriteLine("Input Key  (只能輸入英文字8碼，不能含有數字):");
+    string _sPut = Console.ReadLine();
+    _sKey = _sPut.ToUpper();
+    if (_sKey.Length == 8) break;
+}
+//方法3
+while (_sLicense == "")
+{
+    Console.WriteLine("Input License key:");
+    _sLicense = Console.ReadLine().Replace("-","");
+}
