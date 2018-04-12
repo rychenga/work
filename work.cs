@@ -162,3 +162,38 @@ while (_sLicense == "")
     Console.WriteLine("Input License key:");
     _sLicense = Console.ReadLine().Replace("-","");
 }
+--------------------------------------------------------------------------
+--2018/04/12
+--〔c#〕
+// Linq orderby
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace LineQ
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Specify the data source. 
+            int[] scores = new int[] { 97, 92, 81, 60 ,20,10,100,101,155,62,88,90,80};
+
+            // Define the query expression.
+            IEnumerable<int> scoreQuery =
+                from score in scores
+                where score > 80
+                orderby score descending
+                select score;
+
+            // Execute the query. 
+            foreach (int i in scoreQuery)
+            {
+                Console.Write(i + " ");
+            }
+
+            Console.ReadKey();
+        }
+    }
+}
