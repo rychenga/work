@@ -133,6 +133,108 @@ namespace demo
     }
 }
 --------------------------------------------------------------------------
+--2018/04/03
+--〔c#〕
+// class成員範例
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+//宣告一個委派型別:無回傳值，無任何參數。
+delegate void check();
+
+namespace demo
+{
+    class Test
+    {
+        //宣告欄位
+        public int x;
+        // private field
+        private DateTime Day;
+
+        //宣告屬性
+        public int Number { get; set; }
+        // Public property exposes date field safely.
+        public DateTime Date
+        {
+            get
+            {
+                return Day;
+            }
+            set
+            {
+                // Set some reasonable boundaries for likely birth dates.
+                if (value.Year > 1900 && value.Year <= DateTime.Today.Year)
+                {
+                    Day = value;
+                }
+                else
+                    throw new ArgumentOutOfRangeException();
+            }
+
+        }
+        //宣告方法
+        public void Add()
+        {
+            evtAdd();
+        }
+        public void CustomClass()
+        {
+          Number = 0;
+        }
+        public int Multiply(int num)
+        {
+            return num * Number;
+        }
+        //宣告事件
+        //宣告一個由 DlgDoCalcDelegate 委派所支援的事件
+        public event check evtAdd;
+    }
+
+    class Program
+    {
+        private void DoAdd()
+        {
+            AddMethod();
+        }
+        private void AddMethod()
+        {
+            long lngFirstValue;
+            long lngSecondValue;
+
+            long lngSum;
+            Console.WriteLine("請輸入第一個進行運算數值 :");
+            lngFirstValue = long.Parse(Console.ReadLine());
+
+            Console.WriteLine("請輸入第二個進行運算數值 :");
+            lngSecondValue = long.Parse(Console.ReadLine());
+            lngSum = lngFirstValue + lngSecondValue;
+
+            Console.WriteLine("{0} 與 {1} 的加總等於 {2} ", lngFirstValue, lngSecondValue, lngSum);
+        }
+        static void Main(string[] args)
+        {
+            Program go = new Program();
+            Test rec = new Test();
+            //將 DoAdd 方法於 evtAdd 事件中註冊
+            rec.evtAdd += new check(go.DoAdd);
+            Console.WriteLine("請輸Number運算數值 :");
+            rec.Number = int.Parse(Console.ReadLine());
+            Console.WriteLine("請輸 X 運算數值 :");
+            rec.x = int.Parse(Console.ReadLine()); 
+            int result = rec.Multiply(rec.x);
+            Console.WriteLine("The result is {0}.",result);
+            Console.WriteLine("觸發加法運算事件 …");
+            
+            //觸發事件。
+            rec.Add();
+            Console.Read();
+        }
+    }
+}
+
+--------------------------------------------------------------------------
 --2018/04/11
 --〔c#〕
 //方法一
