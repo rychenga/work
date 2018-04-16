@@ -333,3 +333,51 @@ namespace LineQ
         }
     }
 }
+--------------------------------------------------------------------------
+--2018/04/16
+--〔c#〕
+//console sample
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace demo
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            try
+            {
+                string input = Console.ReadLine();
+                if (args.Length == 0 && input.Length == 0)
+                {
+                    Console.WriteLine("please input data ");
+                    Console.WriteLine("example: *.exe DATA or echo DATA | *.exe ");
+                }
+                else  if (args.Length != 0)
+                {
+                    for (int i = 0; i < args.Length ; i++)
+                    {
+                    	Console.WriteLine("ARGS[{0}]: {1}", i, args[i]);
+                    }
+                    
+                }
+                else if (input.Length != 0)
+                {
+                    Console.WriteLine("strings length: {0} Console: {1}", input.Length,input);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.ToString());
+            }
+
+            //Console.ReadKey();
+            
+        }
+    }
+}
