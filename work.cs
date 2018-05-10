@@ -381,3 +381,15 @@ namespace demo
         }
     }
 }
+--------------------------------------------------------------------------
+--2018/05/10
+--〔c#〕
+--對話方塊中openFileDialog1(WINDOWS 開啟檔案)
+ openFileDialog1.Filter = "Access文件|*.mdb"; //設定打開文件篩選器
+openFileDialog1.Title = "選擇Access文件(限定*.mdb)";//設定打開對話框標題
+openFileDialog1.Multiselect = false; //設定打開對話框中只能單擇
+
+if (openFileDialog1.ShowDialog()==DialogResult.OK)//判斷是否選擇了文件
+{
+    txt_Path.Text = openFileDialog1.FileName;//文字框中顯示MDB文件名
+}
