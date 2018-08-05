@@ -434,3 +434,27 @@ private static void Row_Deleted(object sender, DataRowChangeEventArgs e)
     Console.WriteLine("Row_Deleted Event: name={0}; action={1}", 
         e.Row["name", DataRowVersion.Original], e.Action);
 }
+--------------------------------------------------------------------------
+--2018/08/05
+--〔batchfile〕
+--bathfile input 參數限定4個
+@ECHO OFF
+
+echo %1
+echo %2
+echo %3
+echo %4
+
+IF (%4)==() (echo "demo.cmd account password servername action" & GOTO EXIT)
+IF NOT (%5)==() (echo "demo.cmd account password servername action" & GOTO EXIT)
+echo "START!!!"
+
+
+:EXIT
+echo "EXIT!!"
+ 
+--------------------------------------------------------------------------
+ 
+--------------------------------------------------------------------------
+ 
+--------------------------------------------------------------------------
