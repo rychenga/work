@@ -437,6 +437,8 @@ private static void Row_Deleted(object sender, DataRowChangeEventArgs e)
 --------------------------------------------------------------------------
 --2018/08/05
 --〔batchfile〕
+--https://www.tutorialspoint.com/index.htm
+--https://www.tutorialspoint.com/batch_script/batch_script_input_output.htm
 --bathfile input 參數限定4個
 @ECHO OFF
 
