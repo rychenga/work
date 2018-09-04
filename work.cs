@@ -456,7 +456,39 @@ echo "START!!!"
 echo "EXIT!!"
  
 --------------------------------------------------------------------------
- 
+ --2018/09/04
+             //calendar1.AutoScroll = true;
+            // 找出字體大小,並算出比例
+            float dpiX, dpiY;
+            Graphics graphics = this.CreateGraphics();
+            dpiX = graphics.DpiX;
+            dpiY = graphics.DpiY;
+
+            int intPercent = (dpiX == 96) ? 100 : (dpiX == 120) ? 125 : 150;
+
+            float floatPercent = (dpiX == 96) ? 100 : (dpiX == 120) ? 125 : 150;
+
+            // 針對字體變更Form的大小
+            this.Height = this.Height * intPercent / 100;
+            this.Width = this.Width * intPercent / 100;
+
+            MessageBox.Show(intPercent.ToString());
+            MessageBox.Show(floatPercent.ToString());
+
+            //this.tabControl1.Size.Height = Convert.ToInt16(this.tabControl1.Size.Height * intPercent / 100);
+            //this.tabControl1.Size.Width = this.tabControl1.Size.Width * intPercent / 100;
+            SizeF sf = new SizeF();
+            //sf = new SizeF(1.5F,1.5F);
+            sf = new SizeF(floatPercent/100, floatPercent/100);
+
+            //sf = new SizeF(dpiHight,dpiWidth);
+            //tabControl1.Scale(new SizeF(1.5F, 1.5F));
+            tabControl1.Scale(sf);
+            //calendar1.Scale(new SizeF(0.8F, 0.8F));
+            //MessageBox.Show(tabControl1.Size.Height.ToString());
+            //MessageBox.Show(tabControl1.Size.Width.ToString());
+            MessageBox.Show(sf.ToString());
+            
 --------------------------------------------------------------------------
  
 --------------------------------------------------------------------------
