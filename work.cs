@@ -500,6 +500,13 @@ echo "EXIT!!"
             //calendar1.MaximumSize = new System.Drawing.Size(1920, 1200);
             //calendar1.ClientSize = new System.Drawing.Size(1920, 1200);
  
+             ////Font
+            Font f = calendar1.Font;
+            float calOriginal = calendar1.Font.Size;
+            float fontRatioW = calendar1.Width;
+            float fontRatio = (calendar1.Width + calendar1.Height) / 2; //average change in control Height and Width
+            calendar1.Font = new Font(f.FontFamily, calOriginal * 0.59F, f.Style)
+             
             this.Tag = this.Height + "|" + this.Width;
             foreach (Control o in this.Controls)
             {
