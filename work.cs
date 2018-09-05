@@ -490,5 +490,29 @@ echo "EXIT!!"
             MessageBox.Show(sf.ToString());
             
 --------------------------------------------------------------------------
- 
+--20180905
+         private void Form1_Load(object sender, EventArgs e)
+        {
+            this.Tag = this.Height + "|" + this.Width;
+            foreach (Control o in this.Controls)
+            {
+                o.Tag = o.Top + "|" + o.Left + "|" + o.Height + "|" + o.Width;
+            }
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            foreach (Control o in this.Controls)
+            {
+                o.Width = (int)(double.Parse(o.Tag.ToString().Split('|')[3]) * (this.Width / double.Parse(this.Tag.ToString().Split('|')[1])));
+                o.Height = (int)(double.Parse(o.Tag.ToString().Split('|')[2]) * (this.Height / double.Parse(this.Tag.ToString().Split('|')[0])));
+                o.Left = (int)(double.Parse(o.Tag.ToString().Split('|')[1]) * (this.Width / double.Parse(this.Tag.ToString().Split('|')[1])));
+                o.Top = (int)(double.Parse(o.Tag.ToString().Split('|')[0]) * (this.Height / double.Parse(this.Tag.ToString().Split('|')[0])));
+
+                calendar1.Width = (int)(double.Parse(o.Tag.ToString().Split('|')[3]) * (this.Width / double.Parse(this.Tag.ToString().Split('|')[1])));
+                calendar1.Height = (int)(double.Parse(o.Tag.ToString().Split('|')[2]) * (this.Height / double.Parse(this.Tag.ToString().Split('|')[0])));
+                calendar1.Left = (int)(double.Parse(o.Tag.ToString().Split('|')[1]) * (this.Width / double.Parse(this.Tag.ToString().Split('|')[1])));
+                calendar1.Top = (int)(double.Parse(o.Tag.ToString().Split('|')[0]) * (this.Height / double.Parse(this.Tag.ToString().Split('|')[0])));
+            }
+        }
 --------------------------------------------------------------------------
