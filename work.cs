@@ -530,6 +530,66 @@ echo "EXIT!!"
             }
         }
 --------------------------------------------------------------------------
+ --2018/09/06
+ --解析度大小，自由變化， DPI 縮小
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace demo
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // 找出字體大小,並算出比例
+            float dpiX, dpiY;
+            Graphics graphics = this.CreateGraphics();
+            dpiX = graphics.DpiX;
+            dpiY = graphics.DpiY;
+            //int intPercent = (dpiX == 96) ? 100 : (dpiX == 120) ? 125 : (dpiX == 144) ? 150:200;
+            float floatPercent = (dpiX == 96) ? 100 : (dpiX == 120) ? 125 : (dpiX == 144) ? 150 : 200;
+
+            float fontRatio = 70 / floatPercent; //縮小70%
+            //calendar1.Font = new Font(f.FontFamily, calOriginal * 0.59F, f.Style);
+            //calendar 字型縮小0.6
+            calendar1.Font = new Font(calendar1.Font.FontFamily, calendar1.Font.Size * fontRatio, calendar1.Font.Style);
+
+            this.Tag = this.Height + "|" + this.Width;
+            foreach (Control o in this.Controls)
+            {
+                o.Tag = o.Top + "|" + o.Left + "|" + o.Height + "|" + o.Width;
+            }
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            foreach (Control o in this.Controls)
+            {
+                o.Width = (int)(double.Parse(o.Tag.ToString().Split('|')[3]) * (this.Width / double.Parse(this.Tag.ToString().Split('|')[1])));
+                o.Height = (int)(double.Parse(o.Tag.ToString().Split('|')[2]) * (this.Height / double.Parse(this.Tag.ToString().Split('|')[0])));
+                o.Left = (int)(double.Parse(o.Tag.ToString().Split('|')[1]) * (this.Width / double.Parse(this.Tag.ToString().Split('|')[1])));
+                o.Top = (int)(double.Parse(o.Tag.ToString().Split('|')[0]) * (this.Height / double.Parse(this.Tag.ToString().Split('|')[0])));
+
+                calendar1.Width = (int)(double.Parse(o.Tag.ToString().Split('|')[3]) * (this.Width / double.Parse(this.Tag.ToString().Split('|')[1])));
+                calendar1.Height = (int)(double.Parse(o.Tag.ToString().Split('|')[2]) * (this.Height / double.Parse(this.Tag.ToString().Split('|')[0])));
+                calendar1.Left = (int)(double.Parse(o.Tag.ToString().Split('|')[1]) * (this.Width / double.Parse(this.Tag.ToString().Split('|')[1])));
+                calendar1.Top = (int)(double.Parse(o.Tag.ToString().Split('|')[0]) * (this.Height / double.Parse(this.Tag.ToString().Split('|')[0])));
+            }
+        }
+    }
+}
+
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
