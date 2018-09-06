@@ -531,7 +531,7 @@ echo "EXIT!!"
         }
 --------------------------------------------------------------------------
  --2018/09/06
- --解析度大小，自由變化， DPI 縮小
+ --解析度大小，自由變化， DPI 縮小，選日期影響calendar
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -548,6 +548,12 @@ namespace demo
         public Form1()
         {
             InitializeComponent();
+
+            ////Monthview colors
+            //monthView1.MonthTitleColor = monthView1.MonthTitleColorInactive = CalendarColorTable.FromHex("#C2DAFC");
+            //monthView1.ArrowsColor = CalendarColorTable.FromHex("#77A1D3");
+            //monthView1.DaySelectedBackgroundColor = CalendarColorTable.FromHex("#F4CC52");
+            //monthView1.DaySelectedTextColor = monthView1.ForeColor;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -587,8 +593,14 @@ namespace demo
                 calendar1.Top = (int)(double.Parse(o.Tag.ToString().Split('|')[0]) * (this.Height / double.Parse(this.Tag.ToString().Split('|')[0])));
             }
         }
+
+        private void monthView1_SelectionChanged_1(object sender, EventArgs e)
+        {
+            calendar1.SetViewRange(monthView1.SelectionStart, monthView1.SelectionEnd);
+        }
     }
 }
+
 
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
