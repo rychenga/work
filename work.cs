@@ -603,6 +603,111 @@ namespace demo
 
 
 --------------------------------------------------------------------------
+--20181004
+ --Excel 刪除特定行列
+ using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Office.Interop.Excel;
+using System.Reflection;
+
+namespace demo
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.ApplicationClass;//實例化Excel對像
+            Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();//實例化Excel對像
+            Microsoft.Office.Interop.Excel.Range range = null;
+            Microsoft.Office.Interop.Excel.Workbook book = null;
+            Microsoft.Office.Interop.Excel.Worksheet sheet =null;
+
+            Console.WriteLine("*****Start*****");
+            string input = @"D:\demo\20181004\demo\TEST.xls";
+
+            try
+            {
+                Console.WriteLine("path: {0}",input);
+                //Console.ReadKey();
+
+
+                object missing = Missing.Value;//取得缺少的object類型值
+                //打開指定的Excel文件
+                //Microsoft.Office.Interop.Excel.Workbook workbook = excel.Application.Workbooks.Open(input, missing, missing, missing);
+                //((Microsoft.Office.Interop.Excel.Worksheet)workbook.Sheets["RAW"]).Delete();//刪除選擇的工作表
+                //Console.WriteLine("工作表刪除成功！");
+
+                excel.Visible = false;
+                //打開指定的Excel文件
+                book = excel.Workbooks.Open(input, Missing.Value, false, Missing.Value, Missing.Value, Missing.Value, true, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value);
+                //int wsCount = book.Worksheets.Count;//取得excel file sheet counts
+                //for (int i = 1; i <= wsCount; i++)
+                //{
+                //    sheet = (Microsoft.Office.Interop.Excel.Worksheet)book.Worksheets[i];
+                //    //获取编辑范围
+                //    range = (Microsoft.Office.Interop.Excel.Range)sheet.Rows[1, Missing.Value];
+                //    //删除整行
+                //    range.Delete(Microsoft.Office.Interop.Excel.XlDirection.xlDown);
+
+                //    //更新单元格内容
+                //    sheet.Cells[1, 3] = "pcID";
+
+                //    //保存编辑
+                //    book.Save();
+                //}
+
+
+
+
+                sheet = (Microsoft.Office.Interop.Excel.Worksheet)book.Worksheets[1];//開啟第一個sheet
+                //获取编辑范围
+                range = (Microsoft.Office.Interop.Excel.Range)sheet.Rows[3, Missing.Value];//準備刪除第三行
+                //删除整行
+                range.Delete(Microsoft.Office.Interop.Excel.XlDirection.xlDown);
+                //保存编辑
+                book.Save();
+                //close book
+                book.Close(Missing.Value, Missing.Value, Missing.Value);
+                //退出excel application，可以將前面的excel.Visible = false改为excel.Visible = true看看;
+                excel.Workbooks.Close();
+                excel.Quit();
+                excel.Visible = true;
+
+
+
+
+
+
+
+
+
+
+
+                excel.Application.DisplayAlerts = false;//不顯示提示對話框
+                //workbook.Save();//儲存工作表
+                System.Diagnostics.Process[] excelProcess = System.Diagnostics.Process.GetProcessesByName("EXCEL");//實例化進程對像
+                foreach (System.Diagnostics.Process p in excelProcess)
+                 p.Kill();//關閉進程
+                Console.WriteLine("***** END *****");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+
+                excel.Application.DisplayAlerts = false;//不顯示提示對話框
+                //workbook.Save();//儲存工作表
+                System.Diagnostics.Process[] excelProcess = System.Diagnostics.Process.GetProcessesByName("EXCEL");//實例化進程對像
+                foreach (System.Diagnostics.Process p in excelProcess)
+                p.Kill();//關閉進程
+                Console.ReadKey();
+            }
+
+        }
+    }
+}
+
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
