@@ -709,6 +709,17 @@ namespace demo
 }
 
 --------------------------------------------------------------------------
+ let
+    來源 = Folder.Files("C:\Users\maple\Desktop\power BI\Power BI(二)案例操作\02-Power Query(二)\04-四縣市人口合併Excel"),
+    已移除其他資料行 = Table.SelectColumns(來源,{"Content"}),
+    已新增自訂 = Table.AddColumn(已移除其他資料行, "取得表格資料", each Excel.Workbook([Content])),
+    已移除資料行 = Table.RemoveColumns(已新增自訂,{"Content"}),
+    #"已展開 取得表格資料" = Table.ExpandTableColumn(已移除資料行, "取得表格資料", {"Name", "Data", "Item", "Kind", "Hidden"}, {"取得表格資料.Name", "取得表格資料.Data", "取得表格資料.Item", "取得表格資料.Kind", "取得表格資料.Hidden"}),
+    已新增自訂1 = Table.AddColumn(#"已展開 取得表格資料", "去除標頭", each Table.PromoteHeaders([取得表格資料.Data])),
+    已移除其他資料行1 = Table.SelectColumns(已新增自訂1,{"去除標頭"}),
+    #"已展開 去除標頭" = Table.ExpandTableColumn(已移除其他資料行1, "去除標頭", {"日期", "縣市", "區  域  別", "戶數", "男", "女", "合計"}, {"日期", "縣市", "區  域  別", "戶數", "男", "女", "合計"})
+in
+    #"已展開 去除標頭"
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
  
