@@ -729,6 +729,10 @@ in
 --------------------------------------------------------------------------
 --2018/10/13
 --[c#]
+--http://www.eion.com.tw/Blogger/?Pid=1150
+--http://limitedcode.blogspot.com/2014/11/c-datetime.html
+--https://dotblogs.com.tw/rainmaker/archive/2013/09/02/116105.aspx
+
 //程式語法C#C# DateTime 日期轉換格式, 時間計算, 日期天數計算
 //C# Date() 日期與時間
 //標準日期和時間格式字串使用單一格式規範，定義日期和時間值的文字表示。
