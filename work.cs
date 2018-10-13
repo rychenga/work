@@ -457,6 +457,7 @@ echo "EXIT!!"
  
 --------------------------------------------------------------------------
  --2018/09/04
+ --[c#]
              //calendar1.AutoScroll = true;
             // 找出字體大小,並算出比例
             float dpiX, dpiY;
@@ -491,6 +492,7 @@ echo "EXIT!!"
             
 --------------------------------------------------------------------------
 --20180905
+ --[c#]
  
          private void Form1_Load(object sender, EventArgs e)
         {
@@ -531,6 +533,7 @@ echo "EXIT!!"
         }
 --------------------------------------------------------------------------
  --2018/09/06
+ --[c#]
  --解析度大小，自由變化， DPI 縮小，選日期影響calendar
 using System;
 using System.Collections.Generic;
@@ -604,7 +607,8 @@ namespace demo
 
 --------------------------------------------------------------------------
 --20181004
- --Excel 刪除特定行列
+--[c#]
+--Excel 刪除特定行列
  using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -709,6 +713,8 @@ namespace demo
 }
 
 --------------------------------------------------------------------------
+ --2018/10/05
+ --[Excel]
  let
     來源 = Folder.Files("C:\Users\maple\Desktop\power BI\Power BI(二)案例操作\02-Power Query(二)\04-四縣市人口合併Excel"),
     已移除其他資料行 = Table.SelectColumns(來源,{"Content"}),
@@ -720,6 +726,72 @@ namespace demo
     #"已展開 去除標頭" = Table.ExpandTableColumn(已移除其他資料行1, "去除標頭", {"日期", "縣市", "區  域  別", "戶數", "男", "女", "合計"}, {"日期", "縣市", "區  域  別", "戶數", "男", "女", "合計"})
 in
     #"已展開 去除標頭"
+--------------------------------------------------------------------------
+--2018/10/13
+--[c#]
+//程式語法C#C# DateTime 日期轉換格式, 時間計算, 日期天數計算
+//C# Date() 日期與時間
+//標準日期和時間格式字串使用單一格式規範，定義日期和時間值的文字表示。
+
+//任何包含一個以上字元(包含空白字元)的日期和時間格式字串都會解譯為自訂日期和時間格式字串，
+//自訂日期和時間格式字串可以搭配日期和時間執行個體的 ToString 方法或是支援複合格式的方法使用。
+
+
+//轉換日期格式為字串
+//文法：(參數大小寫解譯不同 MM=month, mm=Minutes, HH=24hours, hh=12hours)
+DateTime myDate = DateTime.Now;
+string myDateString = myDate.ToString("yyyy-MM-dd HH:mm:ss");
+//2011-10-16 02:33:54
+
+
+//轉換字串格式為日期
+DateTime dt = Convert.ToDateTime(myDateString);
+//2011/10/16 上午 02:33:54
+
+//計算兩個時間差
+DateTime sDate = Convert.ToDateTime("2010-10-15 15:50:39");
+DateTime eDate = Convert.ToDateTime("2010-10-25 15:50:39");
+TimeSpan ts = sDate - eDate;
+double days = ts.TotalDays;
+TextBox.Text = "差距 " + Convert.ToInt32(days).ToString() + "天";
+//差距 -10 天
+
+//[Application Example]
+DateTime dt = DateTime.Now; 取得目前日期時間
+
+//本週一的日期
+DateTime startWeek = dt.AddDays(1-Convert.ToInt32(dt.DayOfWeek.ToString("d")));
+//本週日的日期
+DateTime endWeek = startWeek.AddDays(6);
+//本月之月初的日期
+DateTime startMonth = dt.AddDays(1 - dt.Day);
+//本月之月底的日期
+DateTime endMonth = startMonth.AddMonths(1).AddDays(-1);
+//本季初的日期
+DateTime startQuarter = dt.AddMonths(0-(dt.Month-1) % 3).AddDays(1-dt.Day);
+//本季末的日期
+DateTime endQuarter = startQuarter.AddMonths(3).AddDays(-1);
+//本年年初的日期
+DateTime startYear = new DateTime(dt.Year, 1, 1);
+//本年年末的日期
+DateTime endYear = new DateTime(dt.Year, 12, 31);
+
+//上年度的起止日期
+startBeforeYear = DateTime.Parse(DateTime.Now.ToString("yyyy-01-01")).AddYears(-1).ToShortDateString();
+endBeforeYear = DateTime.Parse(DateTime.Now.ToString("yyyy-12-31")).AddDays(-1).ToShortDateString();
+
+//本年度的起止日期
+dateTimePickerStart.Value = DateTime.Parse(DateTime.Now.ToString("yyyy-01-01"));
+dateTimePickerEnd.Value = DateTime.Now;
+
+//下年度的起止日期
+startNextYear = DateTime.Parse(DateTime.Now.ToString("yyyy-01-01")).AddYears(1).ToShortDateString();
+endNextYear = DateTime.Parse(DateTime.Now.ToString("yyyy-12-31")).AddYears(2).AddDays(-1).ToShortDateString();
+dateTimePickerStart.Value = DateTime.Parse(DateTime.Now.ToString("yyyy-01-01")).AddYears(-1);
+dateTimePickerEnd.Value = DateTime.Parse(DateTime.Now.ToString("yyyy-12-31")).AddYears(-1);
+
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------    
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
  
