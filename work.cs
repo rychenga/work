@@ -790,6 +790,11 @@ endNextYear = DateTime.Parse(DateTime.Now.ToString("yyyy-12-31")).AddYears(2).Ad
 dateTimePickerStart.Value = DateTime.Parse(DateTime.Now.ToString("yyyy-01-01")).AddYears(-1);
 dateTimePickerEnd.Value = DateTime.Parse(DateTime.Now.ToString("yyyy-12-31")).AddYears(-1);
 
+//C#計算兩個時間年份月份差
+DateTime dt1 = Convert.ToDateTime("2008-8-8");
+DateTime dt2 = System.DateTime.Now;
+int Year = dt2.Year - dt1.Year;
+int Month = (dt2.Year - dt1.Year) * 12 + (dt2.Month - dt1.Month);
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------    
 --------------------------------------------------------------------------
