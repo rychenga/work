@@ -846,7 +846,17 @@ int Month = (dt2.Year - dt1.Year) * 12 + (dt2.Month - dt1.Month);
                         break;
                 }
             }
---------------------------------------------------------------------------    
+-------------------------------------------------------------------------- 
+             #region 避免重覆process
+            //避免重覆process
+            bool createNew;
+            System.Threading.Mutex appMutex = new System.Threading.Mutex(true, APP_NAME, out createNew);
+            if (!createNew)
+            {
+                appMutex.Close();
+                System.Environment.Exit(System.Environment.ExitCode);
+            }
+            #endregion 避免重覆process
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
  
