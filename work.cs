@@ -858,5 +858,18 @@ int Month = (dt2.Year - dt1.Year) * 12 + (dt2.Month - dt1.Month);
             }
             #endregion 避免重覆process
 --------------------------------------------------------------------------
+set filepath="C:\some path\having spaces.txt"
+
+for /F "delims=" %%i in (%filepath%) do set dirname="%%~dpi" 
+for /F "delims=" %%i in (%filepath%) do set filename="%%~nxi"
+for /F "delims=" %%i in (%filepath%) do set basename="%%~ni"
+
+echo %dirname%
+echo %filename%
+echo %basename%
+ 
+or 
+FOR /R %LoadFile% %%i in (*.xlsx) DO (ECHO %%i)
+FOR /R %LoadFile% %%i in (*.xlsx) DO (ECHO %%~nxi.txt)
 --------------------------------------------------------------------------
  
