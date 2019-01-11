@@ -872,4 +872,447 @@ or
 FOR /R %LoadFile% %%i in (*.xlsx) DO (ECHO %%i)
 FOR /R %LoadFile% %%i in (*.xlsx) DO (ECHO %%~nxi.txt)
 --------------------------------------------------------------------------
+ [Windows bath file(cmd) IF 指令 ]
+::https://peterju.gitbooks.io/cmddoc/content/loop.html
+
+條件判斷
+IF [NOT] EXIST filename command
+IF [NOT] EXIST filename (command) ELSE (command)
+IF [/I] [NOT] item1==item2 command
+IF item1 Compare-op item2 command
+IF item1 Compare-op item2 (command) ELSE (command)
+IF DEFINED variable command
+
+Compare-op：
+1
+EQU – 等於
+2
+NEQ – 不等於
+3
+LSS – 小於
+4
+LEQ – 小於或等於
+5
+GTR – 大於
+6
+GEQ – 大於或等於
+
+大小相同
+1
+if "ABC"=="ABC" echo 大小寫相同
+
+區分大小寫 
+1
+if not "ABC"=="abc" echo 大小寫不同
+
+不區分大小寫
+1
+if /I "ABC"=="abc" echo 兩者相同相等
+
+判斷檔案是否存在
+1
+if NOT EXIST C:\text.txt echo c:\text.txt檔案不存在
+
+如果環境變數是空，可在變數外加上特殊符號，以防止錯誤發生
+1
+IF "2" == "15" echo "bigger"
+
+確認環境變數是否存在
+view sourceprint?
+1
+IF DEFINED a echo 123
+2
+set a=5
+3
+IF DEFINED a echo 123
+4
+set a=
+5
+IF DEFINED a echo 123
+
+
+[Windows bath file(cmd) For 使用 ]
+
+使用Batch中的For指令
+
+::遞迴搜尋指定的路徑下所有符合檔案的 for /R 迴圈
+FOR /R – 列舉目前目錄下的全部子目錄名所有檔案
+FOR /R [[drive:]path] %variable IN (set) DO command [command-parameters]
+1
+FOR /R %i IN (*) DO echo %i
+exp:
+::將 c:\temp\ 目錄與所有子目錄下的 *.bak 刪除
+for /R c:\temp\ %%G in (*.bak) do del "%%G"
+
+::找出符合條件之目錄的 for /D 迴圈
+FOR /D – 列舉目前目錄下的子目錄名
+FOR /D %variable IN (set) DO command [command-parameters]
+1
+FOR /D %i IN (*) DO echo %i
+
+exp:
+::顯示使用者目錄中的所有目錄名稱 此例必須直接在命令列輸入(注意變數名稱的差別)、環境變數 userprofile 代表使用者目錄
+for /D %i in (%userprofile%\*) DO @echo %i
+
+::可以設定開始數值、增/減數值、停止數值的 for /L 迴圈
+FOR /L – 以增量形式從開始到結束一個數字序列
+FOR /L %variable IN (start,step,end) DO command [command-parameters]
+1
+set sum=0
+2
+FOR /L %i IN (1, 1, 100) DO set /a sum=sum+%i
+3
+echo %sum%
+4
+>> 5050
+
+::逐行讀取文字檔的 for /F 迴圈
+FOR /F – 做在一個檔案裡的指令
+FOR /F ["options"] %variable in (file-set) do command [command-parameters]
+FOR /F ["options"] %variable in ("string") do command [command-parameters]
+FOR /F ["options"] %variable in ('command') do command [command-parameters]
+file-set為一個或多個檔案名稱。/f 分析每個檔案的每一行，跳過空白行。"options" 關鍵字：
+eol=c 用來決定斷行符號，預設為 \n，但可換成其他字元（其中 c 只能是一個字元）
+skip=n 用來決定要先跳過幾層迴圈（也就是跳過前面幾行的意思）
+delims=xxx 用來決定欄位的分隔字元，預設為空白與TAB符號，並可自訂多個字元，多個字元時需用逗號(,)區隔開。
+tokens=x,y,m-n用來決定一次要取出幾個欄位，第一個欄位會存放在第一個自動變數，第二個欄位會存放在第二個自動變數裡，依此類推，說明如下。
+第一個變數為%i並設並tokens=1-3，則後面將得到的變數為%%i、%%j、%%k
+1
+Set a=aaa_bbb_111-222-333
+2
+For /F "tokens=1-3 delims=_" %%i in ("%a%") do echo %%i  %%j  %%k
+3
+>> aaa  bbb  111-222-333
+第一個變數為%i並設並tokens=2,3，則後面將得到的變數為%%i、%%j
+1
+Set a=aaa_bbb_111-222-333
+2
+For /F "tokens=1-3 delims=_" %%i in ("%a%") do echo %%i  %%j
+3
+>> bbb  111-222-333
+
+[Windows bath file(cmd) 變數使用]
+
+環境變數的使用，可以做到跟VC++中CString的用法類似，各位可以參考如下。 
+01
+set A=1234567890
+02
+set B=%A%
+03
  
+04
+REM 從第3 字元後開始取2個字元
+05
+set B=%A:~3,2%
+06
+echo %B%
+07
+>>45
+08
+ 
+09
+REM 從前面開始取5個字元
+10
+set B=%A:~,5%
+11
+echo %B%
+12
+>>12345
+13
+ 
+14
+REM 從第3字元後開始取到後面。
+15
+set B=%A:~3%
+16
+echo %B%
+17
+>>4567890
+18
+ 
+19
+REM 從後面開始取前5個字元。
+20
+set B=%A:~-5%
+21
+echo %B%
+22
+>>67890
+23
+ 
+24
+REM 從開頭取到最後2個字元不取。
+25
+set B=%A:~0,-2%
+26
+echo %B%
+27
+>>12345678
+28
+ 
+29
+REM 字元中有5的取代成sss。
+30
+set B=%A:5=sss%
+31
+echo %B%
+32
+>>1234sss67890
+其他常用系統變數
+系統變數
+描述
+%n(%0、%1 ~ %9)
+外部變數輸入所使用的變數代稱，如C/C++的Argv
+%CMDEXTVERSION%
+展開為目前的命令處理擴充功能的版本號碼
+%CMDCMDLINE%
+處理目前命令提示字元視窗命令的cmd.exe的完整路徑
+%CD%
+目前的工作資料夾
+%DATE%
+set now=%date:~0,4%%date:~5,2%%date:~8,2%
+目前的系統日期
+%ERRORLEVEL%
+最近執行過的命令的錯誤碼；非零的值表示發生過的錯誤碼
+%ProgramFiles%
+應用程式目錄，預設是C:\Program Files
+%ProgramFiles(x86)%
+應用程式目錄，預設是C:\Program Files(x86)
+%Path%
+執行檔的搜尋路徑
+%RANDOM%
+顯示0到32767之間的十進位整數亂數
+%SystemRoot%
+系統根目錄，預設是C:\WINNT或C:\WINDOWS
+%SystemDirectory%
+系統目錄，預設是C:\WINNT\System32或C:\WINDOWS\System32
+%TIME%
+目前的系統時間
+%Temp%、%Tmp%
+暫存檔目錄
+%USERNAME%
+使用者帳號名稱
+%WINDIR%
+Windows目錄，預設是C:\WINNT或C:\WINDOWS
+
+好像有點誤解，補充說明一下 囧
+
+    %~dp0    批次檔所在路徑，例如
+             C:\Program Files\Mozilla Firefox\
+             或 UNC 路徑，例如
+             \\Server\Share\Program Files\Mozilla Firefox\
+
+    %~d0     批次檔所在磁碟代號，例如
+             C:
+             或 UNC 路徑的雙反斜線
+             \\
+
+    %~p0     批次檔所在路徑，不含磁碟代號，例如
+             \Program Files\Mozilla Firefox\
+             或開頭不帶雙反斜線的 UNC 路徑，例如
+             Server\Share\Program Files\Mozilla Firefox\
+
+    %cd%     目前工作路徑，非根路徑時後面不帶反斜線，例如
+             C:\Program Files\Mozilla Firefox
+
+寫個批次檔測試一下比較容易瞭解 %~dp0 與 %cd% 的差別
+
+    @ECHO OFF
+    ECHO %%~dp0 = %~dp0
+    ECHO %%cd%%  = %cd%
+    PAUSE
+
+當批次檔與目前工作路徑都在 C:\Program Files\Mozilla Firefox\ 時，執行
+批次檔結果如下
+
+    %~dp0 = C:\Program Files\Mozilla Firefox\
+    %cd%  = C:\Program Files\Mozilla Firefox
+    請按任意鍵繼續 . . .
+
+若批次檔所在路徑不變，目前工作路徑在 U:\USB\ 時，執行批次檔結果如下
+
+    %~dp0 = C:\Program Files\Mozilla Firefox\
+    %cd%  = U:\USB
+    請按任意鍵繼續 . . .
+
+
+
+
+
+若在批次檔中使用 SET 命令將 cd 指定為環境變數，則 %cd% 會被取代，不過
+這不表示目前工作路徑被改變，所以 SET CD="%~dp0" 這樣寫應該會有問題說
+
+假設批次檔與執行檔放在一起，以下有三種方法提供參考
+
+1. 如同原文裡的範例，修改 PATH 環境變數
+
+    SET PATH=%~dp0
+    start Program.exe
+
+2. 切換目前工作路徑
+
+    %~d0
+    cd %~dp0
+    start Program.exe
+
+3. 以完整路徑方式執行
+
+    start "" "%~dp0Program.exe"
+
+(sample)
+@echo off
+::ftp action file
+echo user jeff> ftpcmd.dat
+echo 123456>> ftpcmd.dat
+echo bin>> ftpcmd.dat
+echo prompt>> ftpcmd.dat
+echo mput %1>> ftpcmd.dat
+echo quit>> ftpcmd.dat
+sleep 1
+
+::ftp  file to server
+ftp -n -s:ftpcmd.dat 172.20.58.42 >ftp.log
+
+sleep 1
+
+for /F %%i in ('type ftp.log ^|grep  "Successfully transferred" ^|wc -l') DO set checklog=%%i
+
+::echo %checklog%
+
+if '%checklog%' GTR '0' ( echo FTP Successfully transferred & goto exit ) else ( echo FTP transferred fail & echo please double check )
+
+rem del ftpcmd.dat
+
+:exit
+//-----------------------------------------------------
+批處理程式(.Bat)相關知識：
+1. 假設父批處理程序接收兩個可替換參數，並希望將它們傳給Sub.bat。可在父批理程序中使用命令：call Sub.bat%1%2
+2. 設置變量，並等待使用者輸入：set /p Name = 請輸入使用者名稱（註：/p 讓執行暫停，並提供使用者輸入的機會）
+3. 取得變量值：%變量名稱%
+4. 輸出變量值：如：echo 您輸入的使用者名稱為：%Name%
+5. 執行時不顯示指令程式碼：@echo off
+6. 暫停：pause
+7. 註解：::
+8. 批參數(%n)的替代已被增強。可以使用以下語法：
+        %~1        - 刪除引號(")，擴充 %1
+        %~f1        - 將 %1 擴充到一個完全合格的路徑名
+        %~d1        - 僅將 %1 擴充到一個驅動器號
+        %~p1        - 僅將 %1 擴充到一個路徑
+        %~n1        - 僅將 %1 擴充到一個文件名
+        %~x1        - 僅將 %1 擴充到一個文件擴展名
+        %~s1        - 擴充的路徑指含有短名
+        %~a1        - 將 %1 擴充到文件屬性
+        %~t1        - 將 %1 擴充到文件的日期/時間
+        %~z1        - 將 %1 擴充到文件的大小
+        %~$PATH : 1 - 查找列在 PATH 環境變量的目錄，並將 %1
+                      擴充到找到的第一個完全合格的名稱。如果環境
+                      變量名未被定義，或者沒有找到文件，此組合鍵會
+                      擴充到空字符串
+
+       可以組合修定符來取得多重結果：
+        %~dp1      - 只將 %1 擴展到驅動器號和路徑
+        %~nx1      - 只將 %1 擴展到文件名和擴展名
+        %~dp$PATH:1 - 在列在 PATH 環境變量中的目錄裡查找 %1，
+                      並擴展到找到的第一個文件的驅動器號和路徑。
+        %~ftza1    - 將 %1 擴展到類似 DIR 的輸出行。
+//-----------------------------------------------------
+[batchfile 環境變數]
+::暫時方法
+@echo off
+Title JAVA_PATH By Charlotte.HonG& Color 1A
+
+set str=%PATH%;%~dp0jdk1.8.0_101\bin;
+set PATH = "%str%"
+
+exit
+
+::永久方法
+@echo off
+Title JAVA_PATH By Charlotte.HonG& Color 1A
+
+set str=%PATH%;%~dp0jdk1.8.0_101\bin;
+setx /m PATH "%str%"
+
+exit
+
+[batchfile sample]
+--限定input 1個變數
+@echo off
+
+::exp: kill_proc.cmd  process_name
+IF (%1)==() (echo "kill_proc.cmd process_name" & GOTO EXIT)
+IF NOT (%2)==() (echo "kill_proc.cmd process_name" & GOTO EXIT)
+
+ECHO "START !!!!"
+
+ECHO "PROC~"
+
+:EXIT
+ECHO "END !!!!"
+--限定input 2個變數
+@echo off
+
+::exp: kill_proc.cmd  process_name
+IF (%1)==() (echo "kill_proc.cmd process_name" & GOTO EXIT)
+IF (%2)==() (echo "kill_proc.cmd process_name" & GOTO EXIT)
+IF NOT (%3)==() (echo "kill_proc.cmd process_name" & GOTO EXIT)
+
+ECHO "START !!!!"
+
+ECHO "PROC~"
+
+:EXIT
+ECHO "END !!!!"
+
+--限定input 3個變數
+@echo off
+
+::exp: kill_proc.cmd  process_name
+IF (%1)==() (echo "kill_proc.cmd process_name" & GOTO EXIT)
+IF (%3)==() (echo "kill_proc.cmd process_name" & GOTO EXIT)
+IF NOT (%4)==() (echo "kill_proc.cmd process_name" & GOTO EXIT)
+
+ECHO "START !!!!"
+
+ECHO "PROC~"
+
+:EXIT
+ECHO "END !!!!"
+//-----------------------------------------------------
+[batchfile sample]
+::強制顯示為 6 為 06(兩位數)
+::Digital complement two digit length
+set %2=6
+set s=
+set a=
+set /a a=%2+100
+set s=!s! !a:~1!
+echo "OUT: "%s%
+//-----------------------------------------------------
+[ftp windows  指令]
+exp:
+ftp -n -s:ftpcmd.dat 172.20.58.42 >ftp.log
+
+相關參數（來自 Windows 內建說明檔）：
+-v
+抑制顯示遠端伺服器的回應。
+-n
+抑制在初始連線時自動登入。
+-i
+關閉多檔案傳送期間的互動提示。
+-d
+啟用偵錯，以顯示用戶端與伺服器之間所傳遞的所有 ftp 指令。
+-g
+啟用檔案名稱通用慣例，以在本機檔案及路徑名稱中使用萬用字元 (* 與 ?) (請參閱線上 [指令參照] 中的 glob 指令)。
+-s:filename
+指定內含 ftp 指令的文字檔；此指令會在 ftp 啟動之後自動執行。此參數不可含有空格。請改以此參數取代重新導向 (>)。
+-a
+於連結資料連線時使用本機的介面。
+-w:windowsize
+覆寫預設的轉送緩衝區大小 4096。
+computer
+指定電腦名稱或要連線之遠端電腦的 IP 位址。指定此參數時，請務必將其置於行中的最後一個參數。
+
+
+//-----------------------------------------------------
+ -------------------------------------------------------------------------
