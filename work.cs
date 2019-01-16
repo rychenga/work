@@ -1578,6 +1578,36 @@ ECHO IP ADDRESS NOT NOT EXIST
 PAUSE
 EXIT
 -------------------------------------------------------------------------
+MTK_B2B_LAB只轉檔案字首開頭是數字的
+MTK_B2B_STD只轉檔案字首開頭是英文的
+
+@ECHO OFF
+setlocal enabledelayedexpansion
+cls
+
+set LoadFile=D:\Temp\XML\send\
+set Local=%~d0
+set Folder=%~dp0
+
+%Local%
+cd %Folder%
+
+FOR /R %LoadFile% %%i in (*.xlsx) DO (
+set file=%%~nxi
+set exe=%%i
+set check=!file:~,1!
+set lab=
+set std=
+ECHO !file!
+
+FOR /F %%a in ('ECHO !check! ^|gawk "{ if( $0 ~ /[0-9]/){print 10} }"') DO (set lab=%%a)
+IF !lab! EQU 10 (ECHO "TB_MTK_B2B_LAB.awk Process is already!!")
+FOR /F %%a in ('ECHO !check! ^|gawk "{ if( $0 ~ /[a-zA-Z]/){print 100} }"') DO (set std=%%a)
+IF !std! EQU 100 (ECHO "TB_MTK_B2B_STD.awk Process is already!!")
+
+ECHO -------------------------------------------------------
+)
+
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
