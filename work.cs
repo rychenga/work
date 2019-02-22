@@ -1609,5 +1609,32 @@ ECHO -------------------------------------------------------
 )
 
 -------------------------------------------------------------------------
+::20190222
+[ELK]
+::C:\Program Files\java-1.8.0-openjdk-1.8.0.201\jre\lib\i386\jvm.cfg
+#-server KNOWN
+#-client ALIASED_TO -server
+-server KNOWN
+-client IF_SERVER_CLASS -server
+-minimal KNOWN
+
+::C:\elasticsearch-5.6.15\config\jvm.options
+-Xms500m
+-Xmx500m
+
+::C:\elasticsearch-5.6.15\config\elasticsearch.yml
+cluster.name: rychenga
+node.name: node-1
+node.attr.rack: r1
+path.data: D:\DATA
+path.logs: D:\DATA\logs
+network.host: 172.20.56.33
+http.port: 9200
+discovery.zen.ping.unicast.hosts: ["172.20.56.33"]
+discovery.zen.minimum_master_nodes: 1
+#xpack.ml.enabled: false
+
+
+
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
