@@ -1637,4 +1637,217 @@ discovery.zen.minimum_master_nodes: 1
 
 
 -------------------------------------------------------------------------
+::20190225
+::ELASTICSEARCH STARTUP
+C:\elasticsearch-5.6.15\bin\elasticsearch.bat
+
+::檢查 Service info
+http://172.20.56.33:9200/
+
+::Admin tool(cerebro)
+C:\cerebro-0.8.1\bin\cerebro.bat
+http://localhost:9000/#/overview?host=http:%2F%2F172.20.56.33:9200
+
+::FileBeat
+D:\jeff.cheng\tool\filebeat\
+D:\jeff.cheng\tool\filebeat\filebeat.exe -c filebeat.full.yml
+
+
+::kibana
+C:\kibana-5.6.15\bin\kibana.bat
+http://172.20.56.33:5601/
+
+::NEST
+https://www.nuget.org/packages/NEST/6.5.0
+https://github.com/elastic/elasticsearch-net
+https://dotblogs.com.tw/supershowwei/2015/12/24/171106
+https://www.itread01.com/content/1501141214.html
+http://www.cnblogs.com/ljhdo/p/5160329.html
+
+安裝後引用了以下三個DLL
+Elasticsearch.Net.dll（2.4.4）
+Nest.dll（2.4.4）
+Newtonsoft.Json.dll（9.0版本）
+"visual studio 2005" NuGet Packages
+
+::Net. 
+https://docs.microsoft.com/zh-tw/aspnet/web-api/overview/advanced/calling-a-web-api-from-a-net-client
+https://stackoverflow.com/questions/7929013/making-a-curl-call-in-c-sharp
+::Json Nest.dll（2.4.4）
+Newtonsoft.Json.dll
+https://ithelp.ithome.com.tw/articles/10195057
+::winform CURL
+https://blog.csdn.net/yupu56/article/details/53106830
+
+::CURL
+https://xyz.cinc.biz/2012/10/windowscmdhtml.html
+https://stackoverflow.com/questions/8829468/elasticsearch-query-to-return-all-records
+::When we do a GET:
+http://localhost:9200/[your index name]/_search?size=[no of records you want]&q=*:*
+::When we do a POST:
+http://localhost:9200/[your_index_name]/_search
+{
+  "size": [your value] //default 10
+  "from": [your start index] //default 0
+  "query":
+   {
+    "match_all": {}
+   }
+}  
+
+::example
+http://172.20.56.33:9200/filebeat*/_search?pretty=true&q=%2258%2037%2018%2000005899%2079526D5F02CBCC9964656685BD8EC193E096B3E573CBFEA36A28CB42E440B282D80AF5F0752806976F53B023F4282E34DCF3D916B50A7A280F486D1B58B7E2EB1386D07F7D1B5925573A8F9C2D43AD60CB940216A4AE721E08C4C001FDCF898504B79D606947AA01812B362B823022BA9029B8078218481432A207F76F8B232A44D5B769DDFE73FAC4AAF4A8AD4C927D4BC4018BD2F19C2803F99BF9C3E5E69D541D474D6F46283E160C5DCD4247C9E31D7B2507CE692EC69A56733FE95387ED6DCEDB68E34D81DD6537AD440A872AD837AC674FC98191944B6D307C9B82DC63B8FECF4DE5404047F598EBA03C9B5A0746A76AB2C2070265837419CC2DE2A3827D1182F5B5673BC318AD2C7CE0F3012CFBFDED430E795B09A8558CD4C573A29DEA00000145000018000058998CD40000%204D%2000005898%20C79AA9D503C0437ED83D7518AB7F1666826585637E5EC9EA2AAC24CC64F5E2263516BDE66119721F0CB46B3E0FBCD0403731E804257063AD3816A9DF4DB20C2E1D826B9E28CD8570B876881BBF007ED818E32E78FB4B15D437C4F135394E127B21EAFDD320412D59B1837933E79178E08C0E3A402369D225C65F11BB9BCCEF70E622DC7901D118457BE01E54F1C4A3E6E22B21C9BF9353B2DEE68749C6F792AA213356044EA60C93AB4387BE9F0EA819FB6D355E72288DE46317644F90AF4317095E33AB130702308FA728FED2E1DD97ED472281C85C8B5FABA0A98EC6ED0EE80C0B851F9F562374C2B6A62BF41BD3213DFA6A7784F967BC5B8C24EF5B21995CFC47BB95342D7BD8BA6A77D7D981C5B262FE775AEF045BEE41A7B17F97131781550000024500004D000058988A520000%200000F1634CCCCCFF3A930BDF7E356FEB20D765F27CA0C418BDE97036C40E1C06D48BB111C979F1468FC033EC1ADF%20HAWK%20TX+RX+KSS%22
+http://172.20.56.33:9200/filebeat*/_search?pretty=true&q="*xoxo*"
+http://172.20.56.33:9200/filebeat*/_count?q=%22*xoxo*%22
+http://172.20.56.33:9200/filebeat*/_count?q="*xoxo*"
+
+::winform c# CURL 教學
+https://blog.yslifes.com/archives/943
+https://www.jb51.net/article/57156.htm
+https://dotblogs.com.tw/yc421206/2013/11/11/127593
+::20190226 httprequest
+https://dotblogs.com.tw/yc421206/2013/11/11/127593
+https://blog.yowko.com/webrequest-and-httpwebrequest/
+https://stackoverflow.com/questions/2108297/how-to-get-json-response-using-system-net-webrequest-in-c
+
+::Newtonsoft.Json.dll
+https://dotblogs.com.tw/johnny/2014/05/04/intro-to-jsonnet
+https://dotblogs.com.tw/shadow/2011/12/03/60576
+https://blog.csdn.net/yingzhaom/article/details/53350456
+http://www.cnblogs.com/txw1958/archive/2012/08/01/csharp-json.html
+
+
 -------------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.IO;
+using System.Net;
+using Newtonsoft.Json;
+
+namespace elastic
+{
+    class TEST
+    {
+        public void FUNCTION1(string http)
+        {
+            Console.WriteLine(">>> FUNCTION1 >>>");
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(http);
+            request.Method = WebRequestMethods.Http.Get;
+            request.ContentType = "application/json";
+            //雿輻 GetResponse ?寞?撠?request ?嚗????舐 using ??嚗?閮??? close WebResponse ?拐辣嚗?????鋡思??刻瘜?啁? request
+            using (HttpWebResponse httpResponse = (HttpWebResponse)request.GetResponse())
+            //雿輻 GetResponseStream ?寞?敺?server ??銝剖?敺???stream 敹?鋡恍???
+            //雿輻 stream.close 撠勗隞亦?仿???WebResponse ??stream嚗???雿輻 using ????抵蒂銝????航炊嚗???????啣隞?憓?撠望?頛????
+            using (StreamReader streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                string result = streamReader.ReadToEnd();
+                Console.WriteLine(result);
+                //result.Dump();
+            }
+
+        }
+
+        public void FUNCTION2(string http)
+        {
+            Console.WriteLine(">>> FUNCTION2 >>>");
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(http);
+            request.Method = WebRequestMethods.Http.Get;
+            request.ContentType = "application/json";
+            //雿輻 GetResponse ?寞?撠?request ?嚗????舐 using ??嚗?閮??? close WebResponse ?拐辣嚗?????鋡思??刻瘜?啁? request
+            using (HttpWebResponse httpResponse = (HttpWebResponse)request.GetResponse())
+            //雿輻JsonReader ??JsonTextReader
+            using (JsonReader jReader = new JsonTextReader(new StreamReader(httpResponse.GetResponseStream())))
+            {
+                while (jReader.Read())
+                {
+                    Console.WriteLine(jReader.TokenType + "\t\t" + jReader.ValueType + "\t\t" + jReader.Value);
+                    Console.WriteLine(jReader.Path);
+                }
+
+            }
+
+        }
+
+        public void FUNCTION3(string http)
+        {
+            Console.WriteLine(">>> FUNCTION3 >>>");
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(http);
+            request.Method = WebRequestMethods.Http.Get;
+            request.ContentType = "application/json";
+            //雿輻 GetResponse ?寞?撠?request ?嚗????舐 using ??嚗?閮??? close WebResponse ?拐辣嚗?????鋡思??刻瘜?啁? request
+            HttpWebResponse httpResponse = (HttpWebResponse)request.GetResponse(); //撱箇????
+
+            JsonReader jReader = new JsonTextReader(new StreamReader(httpResponse.GetResponseStream())); //撠??蝯夸son
+            while (jReader.Read())
+            {
+                Console.WriteLine(jReader.TokenType + "\t\t" + jReader.ValueType + "\t\t" + jReader.Value);
+                Console.WriteLine(jReader.Path);
+            }
+
+            jReader.Close();//??json
+            httpResponse.Close(); //??connect
+
+        }
+
+        public void FUNCTION5(string http)
+        {
+            Console.WriteLine(">>> FUNCTION5 >>>");
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(http);
+            request.Method = WebRequestMethods.Http.Get;
+            request.ContentType = "application/json";
+            //雿輻 GetResponse ?寞?撠?request ?嚗????舐 using ??嚗?閮??? close WebResponse ?拐辣嚗?????鋡思??刻瘜?啁? request
+            using (HttpWebResponse httpResponse = (HttpWebResponse)request.GetResponse())
+            //雿輻JsonReader ??JsonTextReader
+            using (JsonReader jReader = new JsonTextReader(new StreamReader(httpResponse.GetResponseStream())))
+            {
+                while (jReader.Read())
+                {
+                    if (jReader.Path == "count" && jReader.Path.ToString() != jReader.Value.ToString())
+                    {
+                        int ouptut = Convert.ToInt32(jReader.Value);
+                        Console.WriteLine("total count:'{0}'",ouptut.ToString());
+
+                        //Console.WriteLine(jReader.Value);
+
+                    }
+
+                }
+            }
+
+        }
+
+
+        public int FUNCTION6(string http)
+        {
+            int itemlist = 999;
+
+            Console.WriteLine(">>> FUNCTION6 >>>");
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(http);
+            request.Method = WebRequestMethods.Http.Get;
+            request.ContentType = "application/json";
+            //雿輻 GetResponse ?寞?撠?request ?嚗????舐 using ??嚗?閮??? close WebResponse ?拐辣嚗?????鋡思??刻瘜?啁? request
+            using (HttpWebResponse httpResponse = (HttpWebResponse)request.GetResponse())
+            //雿輻JsonReader ??JsonTextReader
+            using (JsonReader jReader = new JsonTextReader(new StreamReader(httpResponse.GetResponseStream())))
+            {
+                while (jReader.Read())
+                {
+                    if (jReader.Path == "count" && jReader.Path.ToString() != jReader.Value.ToString())
+                    {
+                        itemlist = Convert.ToInt32(jReader.Value);
+
+                    }
+
+                }
+            }
+            return itemlist;
+        }
+    }
+
+}
+
+
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+
