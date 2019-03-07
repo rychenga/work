@@ -1849,5 +1849,301 @@ namespace elastic
 
 
 -------------------------------------------------------------------------
+             /*================================================================================================================================================================
+ class Name: FUNC.cs
+ Description: 
+ * 此為程式進入點
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Author: Jeff.cheng, Auto-Job 2019/03/06
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Additional Remarks: 將讀取 ExportLHS.xlsx 內容，Parse 至 SQL 格式，並寫入指定格式TABLE (MSTAR_FT_LHS)。
+                     
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Revision History:
+ Date               Name                 Issue No.               Description
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ * 2019/03/06       Jeff.cheng           N/A                     Created
+ *
+================================================================================================================================================================
+*/
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Net.Mail;
+using SCT.Tools;
+using System.Data;
+using System.IO;
+//using System.Runtime.InteropServices;
+//using Microsoft.Office.Interop.Excel;
+//using System.Reflection;
+
+namespace MSTAR_FT_LHS
+{
+    class FUNC
+    {
+
+        #region columns for Excel
+        public string Columns;
+        public string Values;
+        public string type;
+        //private object OPT = Missing.Value;
+        #endregion coolums for Excel
+
+        sctLog oLog = null;
+        sctDBBase oOraDB = null;
+
+
+        private List<List<TB_MSTAR_FT_LHS>> _lTB_MSTAR_FT_LHS = new List<List<TB_MSTAR_FT_LHS>>();
+
+        /// <summary>
+        /// 處理 TB_MSTAR_FT_LHS 格式 資料，並回傳list
+        /// </summary>
+        /// <param name="job"></param>
+        /// <param name="sDebug"></param>
+        /// <returns></returns
+        private static List<TB_MSTAR_FT_LHS> MSTAR_FT_LHS(DataRow rows)
+        {
+            //初始化
+            List<TB_MSTAR_FT_LHS> itemList = new List<TB_MSTAR_FT_LHS>();
+            TB_MSTAR_FT_LHS _col = new TB_MSTAR_FT_LHS();
+            _col.COMPANY = rows[0].ToString();
+            _col.DOC_NO = rows[1].ToString();
+            _col.LOT_NO = rows[2].ToString();
+            _col.STAGE = rows[3].ToString();
+            _col.LOT_TYPE = rows[4].ToString();
+            _col.MFG = rows[5].ToString();
+            _col.PRODUCT = rows[6].ToString();
+            _col.FAMILY = rows[7].ToString();
+            _col.RESPONSIBILITY = rows[8].ToString();
+            _col.STATUS = rows[9].ToString();
+            _col.DISPOSITION_DONE = rows[10].ToString();
+            _col.VENDOR_SITE = rows[11].ToString();
+            _col.MTK_OWNER = rows[12].ToString();
+            _col.CREATE_DATE = rows[13].ToString();
+            itemList.Add(_col);
+            return itemList;
+        }
+
+        /// <summary>
+        /// 從指定路徑取的Excel檔案內容 
+        /// </summary>
+        /// <param name="job"></param>
+        /// <param name="sDebug"></param>
+        /// <returns></returns>
+        public List<string> GetRowData(LHS job, string fileName)
+        {
+            //初始化
+            List<GetInfo> listInfo = new List<GetInfo>();
+            DataSet TableSet = new DataSet();
+            //string iSheetName = Convert.ToString("1");
+            string iSheetName = "SCRIBE_NUMERIC_NAME";
+
+            //初始化
+            string Table_Name = job.TableName.Replace("_LINK_", "@"); //置換 "_" to "@"
+            TableSet.Tables.Add(Table_Name);
+
+
+            #region 取得XML設定EXCEL欄位X軸座
+            //取得XML設定EXCEL欄位X軸座標
+            foreach (string items in job.ConDition)
+            {
+                string[] XY = items.Split(',');
+                GetInfo _col = new GetInfo();
+                _col.TableName = Table_Name;
+                _col.columns = XY[0].ToString();
+                _col.X = XY[1];
+                _col.type = XY[2].ToString();
+                listInfo.Add(_col);
+                if (_col.type.ToUpper() == "S" || _col.type.ToUpper() == "D")
+                {
+                    TableSet.Tables[Table_Name].Columns.Add(_col.columns, typeof(string));
+                }
+                else if (_col.type.ToUpper() == "I")
+                {
+                    TableSet.Tables[Table_Name].Columns.Add(_col.columns, typeof(int));
+                }
+            }
+            #endregion 取得XML設定EXCEL欄位X軸座
+
+
+            //// 準備物件列表 
+            List<string> itemList = new List<string>();
+
+            // 開始組insert_SQL
+            #region 開始組insert_SQL
+            sctExcel objExcel = new sctExcel(); //開啟exporrt excel 模板
+            int intCurrentRow = 2;
+
+            #region old
+            //OPEN FILE FOR GET DATA
+            #region OPEN FILE FOR GET DATA
+            job.Log.LogInfo(">>> 開檔: " + fileName);
+            job.Log.LogInfo(">>> GET data from FIEL(" + job.Deputy_Name + ") ");
+
+            //開啟Excle 檔案
+            objExcel.Open(fileName);
+
+            //判斷是否為最後一行，如果是最後一行則bolEof = true
+            bool bolEOF = false;
+
+            while (bolEOF == false)
+            {
+                // 先 check 要處理的這筆資料是否是空的 
+                //string strTemp = objExcel.GetCellValue(iSheetName, intCurrentRow, 1).Trim();
+                string strTemp = objExcel.GetCellValue(1, intCurrentRow, 1).Trim();
+                if (String.IsNullOrEmpty(strTemp))
+                {
+                    intCurrentRow = 2;
+                    bolEOF = true;
+
+                }
+                else
+                {
+                    foreach (DataTable itemColumns in TableSet.Tables)
+                    {
+                        DataRow Rows = itemColumns.NewRow();
+
+                        foreach (GetInfo list in listInfo)
+                        {
+                            if (list.TableName != itemColumns.TableName)
+                            {
+                                break; //如果tablename 不相符就離開
+                            }
+                            if (list.type.ToUpper() == "S" || list.type.ToUpper() == "I")
+                            {
+                                FUNC item = new FUNC();
+                                item.Columns = list.columns;
+                                item.type = list.type;
+                                //item.Values = objExcel.GetCellValue(iSheetName, intCurrentRow, Convert.ToInt16(list.X));
+                                item.Values = objExcel.GetCellValue(1, intCurrentRow, Convert.ToInt16(list.X));
+                                Rows[item.Columns] = item.Values;
+                            }
+                            else if (list.type.ToUpper() == "D")
+                            {
+                                FUNC item = new FUNC();
+                                item.Columns = list.columns;
+                                item.type = list.type;
+                                item.Values = list.X;                //從xml取值下來
+                                Rows[item.Columns] = item.Values;
+                            }
+                        }
+
+                        itemColumns.Rows.Add(Rows);
+                    }
+                    intCurrentRow++;
+
+                }
+            }
+            job.Log.LogInfo(">>> 關檔: " + fileName);
+            // 關檔
+            objExcel.Close();
+            objExcel.Dispose();
+            #endregion OPEN FILE FOR GET DATA
+
+            #endregion old
+
+
+            #region new
+            //Application Excel_APP = new Application();
+            //Workbook Excel_book = Excel_APP.Workbooks.Open(fileName, OPT, OPT, OPT, OPT, OPT, OPT, OPT, OPT, OPT, OPT, OPT, OPT, OPT, OPT);//開啟exporrt excel 模板
+            //int SheetName = 1;
+            //Worksheet Excel_Sheet = (Worksheet)Excel_APP.Sheets["LHS"]; //指定sheet name
+            ////  Excel_APP.Cells[y, 1] = item.SUPPLIER_NAME;
+            ////Range range1 = Excel_Sheet.get_Range("P1", "P" + total_count.ToString());
+            //string test = (Excel_Sheet.Cells[2, 14] as Range).Text.ToString();
+            ////Range raOne = (Range)Excel_Sheet.Cells[2, 14];
+            ////raOne.Columns.AutoFit();     //自動調整欄位寬度1
+            //raOne.EntireColumn.AutoFit();  //自動調整欄位寬度2
+            //raOne.NumberFormat = @"yyyy/MM/dd HH:mm:ss";
+            //objExcel.GetCellValue();
+            //objExcel.Dispose();
+            //Excel_Sheet = null;
+            //Excel_book = null;
+            //Excel_APP.DisplayAlerts = false;
+            //Excel_APP.Workbooks.Close();
+            //Excel_APP.Quit();
+            //System.Runtime.InteropServices.Marshal.FinalReleaseComObject(Excel_APP);
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();
+
+
+        //public string GetCellValue(object sourceSheet, int posY, int posX)
+        //{
+        //    Worksheet objSheet = (Worksheet)m_Excel.Sheets[sourceSheet];
+        //    (objSheet.Cells[posY, posX] as Range).EntireColumn.AutoFit();//自動調整欄位寬度
+        //    return (objSheet.Cells[posY, posX] as Range).Text.ToString();
+        //}
+            #endregion  new
+
+
+            //處理TB_MSTAR_FT_LHS 格式至list
+            #region 處理TB_MSTAR_FT_LHS 格式至list
+            foreach (DataRow Rows in TableSet.Tables["TB_MSTAR_FT_LHS"].Rows)
+            {
+                _lTB_MSTAR_FT_LHS.Add(FUNC.MSTAR_FT_LHS(Rows));
+            }
+            #endregion 處理TB_MSTAR_FT_LHS 格式至list
+
+            //組合INSERT SQL
+            #region 組合INSERT SQL
+            //TB_MSTAR_FT_LHS
+            foreach (List<TB_MSTAR_FT_LHS> Rows in _lTB_MSTAR_FT_LHS)
+            {
+                TB_MSTAR_FT_LHS items = new TB_MSTAR_FT_LHS();
+
+                foreach (TB_MSTAR_FT_LHS row in Rows)
+                {
+                    string _sSQL = "Insert into TB_MSTAR_FT_LHS ( COMPANY,DOC_NO,LOT_NO,STAGE,LOT_TYPE,MFG,PRODUCT,FAMILY,RESPONSIBILITY,STATUS,DISPOSITION_DONE,VENDOR_SITE,MTK_OWNER,CREATE_DATE,UPDATE_TIME ) Values (";
+                    _sSQL += "'" + row.COMPANY + "','" + row.DOC_NO + "','" + row.LOT_NO + "','" + row.STAGE + "','" + row.LOT_TYPE + "','" + row.MFG + "','" + row.PRODUCT + "','" + row.FAMILY + "','" + row.RESPONSIBILITY + "','" + row.STATUS + "','" + row.DISPOSITION_DONE + "','" + row.VENDOR_SITE + "','" + row.MTK_OWNER + "','" + row.CREATE_DATE + "', SYSDATE)";
+                    itemList.Add(_sSQL);
+
+                    if (job.sDebug == true)
+                    {
+                        job.Log.LogDebug(">>> " + _sSQL);
+                        Console.WriteLine(_sSQL);
+                    }
+
+                }
+            }
+            #endregion 組合INSERT SQL
+
+            #endregion 開始組insert_SQL
+
+
+            return itemList;
+        }
+
+        /// <summary>
+        /// 抄寫至DB 
+        /// </summary>
+        /// <param name="job"></param>
+        /// <param name="sDebug"></param>
+        /// <returns></returns>
+        public string InsertDB(sctDBBase db, LHS job, List<string> SQL)
+        {
+            string strMsg = "";
+            try
+            {
+                db.TxnBegin(); // begin
+                foreach (string sSQL in SQL)
+                {
+                    db.Execute(sSQL); //insert DB
+                }
+                db.TxnCommit(); // commint
+            }
+            catch (Exception ex)
+            {
+                db.TxnRollback(); //Exceiption to rollback data
+                job.Log.LogError(ex);
+
+                strMsg += " NUMERIC File insert db error :" + ex.Message + Environment.NewLine;
+            }
+
+            return strMsg;
+        }
+
+    }
+}
+
 -------------------------------------------------------------------------
 
