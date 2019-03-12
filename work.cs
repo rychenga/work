@@ -2205,9 +2205,149 @@ SLEEP(500)
 ;離開AutoIt3
 Exit
 
+::InetGet
+::_IELinkClickByText
 
 'SAMPLE2
+#include <IE.au3>
+_IEErrorHandlerRegister()  ;註冊並使用一個自定義COM錯誤處理程序.
 
+;;開新網頁
+;Opt ("MustDeclareVars", 1)
+;Global Const $ie_new_in_tab = 0x0800
+;Local $oIE2 = _IECreateTab ($oIE1, "http://wsbmesweb01:8088/Setup/frmViewClassMember.aspx")
+
+;;login 
+Local $oIE1 = _IECreate ("http://wsbmesweb01:8088/Login/LoginForm.aspx")
+;Call("SingIn")
+SingIn($oIE1)  ;login
+
+;;NEXT Web Page
+Local $oIE2 = _IENextPage($oIE1,"http://wsbmesweb01:8088/Setup/frmViewClassMember.aspx");
+
+;BU (dropdown list)
+_DropDownSet($oIE2,"ctl00$ContentPlaceHolder1$Drop_BU","TEST")
+
+
+;課程類別(dropdown list)
+_DropDownSet($oIE2,"ctl00$ContentPlaceHolder1$Drop_Course_Category_ID","ARC")
+
+;課程中文 (TEXT)
+_TEXTSet($oIE2,"ctl00_ContentPlaceHolder1_txt_Course_Desc_CH","TARC0045")
+
+;搜尋 (button)
+_Button($oIE2,"ctl00_ContentPlaceHolder1_btnSearch")
+
+;請選擇課程代碼 (dropdown list)
+_DropDownSet($oIE2,"ctl00$ContentPlaceHolder1$Drop_Select_CourseID","TARC0045")
+
+;請選擇已開課班級 (dropdown list)
+_DropDownSet($oIE2,"ctl00$ContentPlaceHolder1$Drop_Select_ClassID","TARC0045_20180905152359")
+
+;登出
+Logout($oIE2)
+
+;關閉網頁
+_IEQuit($oIE1)
+SLEEP(500)
+
+;離開AutoIt3
+Exit
+
+
+;;New Web Page in another Web Page
+Func _IECreateTab (ByRef $oIE, $url)
+Local $Count = 0, $oIE2
+
+  $oIE.Navigate ($url, $ie_new_in_tab)
+
+  While 1
+    $oIE2 = _IEAttach($url, "url")
+    If IsObj($oIE2) Then ExitLoop
+    $Count += 1
+    if $Count > 100 then Exit MsgBox (0,"Error","Load expired")
+    Sleep (50)
+  WEND
+
+  _IELoadWait ($oIE2, 300)
+  return $oIE2
+
+EndFunc
+
+;;login funcion
+Func SingIn(ByRef $oIE)
+	 Local $username = _IEGetObjByName ($oIE,"txt_User_ID")
+	 Local $password = _IEGetObjByName ($oIE,"txt_Pw")
+	 Local $enter    = _IEGetObjByName ($oIE,"btn_Login")	 
+	 _IEFormElementSetValue ($username, "rychenga")
+	 _IEFormElementSetValue ($password, "rychenga")
+	 _IEAction($enter, "click")
+     _IELoadWait ($oIE, 300)
+	 Return $oIE	 
+EndFunc
+
+;;NEXT Web Page
+Func _IENextPage(ByRef $oIE, $url)
+    _IENavigate($oIE, $url)   ;切換網頁
+	_IELoadWait ($oIE, 300)
+	Return $oIE
+	;MsgBox(4096, "The URL2", _IEPropertyGet($oIE, "locationurl"))
+EndFunc
+
+;;DropDown list
+Func _DropDownSet(ByRef $oIE,$oSelect_Name,$input)
+      ;Local $oForm = _IEFormGetObjByName ($oIE, "aspnetForm")                ;"form name"
+	  ;Local $oSelect = _IEFormElementGetObjByName ($oForm, $oSelect_Name)    ;"select name"
+	  ;$iOptionCount = $oSelect.length
+	  ;ConsoleWrite("Length = " & $iOptionCount & @LF)
+      ;For $i = 1 To 10
+      ;   For $n = 0 To $iOptionCount - 1
+      ;       _IEFormElementOptionselect ($oSelect, $n, 1, "byIndex")
+      ;        Sleep(1000)
+      ;   Next
+      ;Next
+      ;_IEFormElementOptionselect ($oSelect, 3, 1, "byIndex")
+      ;_IEFormElementOptionselect ($oSelect, "All", 1, "byText")
+	  Local $oSelect = _IEFormElementGetObjByName (_IEFormGetObjByName ($oIE, "aspnetForm"), $oSelect_Name)	  
+	  _IEFormElementOptionSelect($oSelect, $input, 1, "byValue")	  
+	  _IELoadWait ($oIE, 300)
+	  Return $oIE
+EndFunc
+
+;;TEXT INPUT
+Func _TEXTSet(ByRef $oIE,$oID_Name,$input)
+     _IEFormElementSetValue (_IEGetObjByName ($oIE,$oID_Name), $input)
+     _IELoadWait ($oIE, 300)
+	 Return $oIE
+EndFunc
+
+;;Button
+Func _Button(ByRef $oIE,$oID_Name)
+     _IEAction(_IEGetObjByName ($oIE,$oID_Name), "click")
+     _IELoadWait ($oIE, 300)
+	 Return $oIE
+EndFunc
+
+;;logout function
+Func Logout(ByRef $oIE)
+     Local $oLinks, $oForm, $sURL, $iFlag = 0
+
+     $oLinks = _IETagNameGetCollection($oIE, "a")
+     If @error Then Exit 1
+
+     $iFlag = 0
+     For $oLink In $oLinks
+         If StringInStr(_IEPropertyGet($oLink, "outertext"), "Logout") > 0 Then
+             $iFlag = 1
+             _IEAction($oLink, "focus")
+             _IEAction($oLink, "click")
+             ExitLoop
+         EndIf
+     Next
+     If Not $iFlag Then Exit 2
+	 _IELoadWait ($oIE, 3000)
+	 Return $oIE
+EndFunc
 -------------------------------------------------------------------------
              
 -------------------------------------------------------------------------
