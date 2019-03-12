@@ -2349,7 +2349,11 @@ Func Logout(ByRef $oIE)
 	 Return $oIE
 EndFunc
 -------------------------------------------------------------------------
-             
+ https://www.autoitscript.com/forum/search/?q=Get%20IE%20element%20by%20CSS
+ https://www.autoitscript.com/forum/topic/190619-get-ie-element-by-cssselector/
+ https://www.autoitscript.com/forum/topic/197738-solved-ie-element-with-an-existing-id-cant-be-found/
+ https://www.autoitscript.com/forum/topic/190906-solved-ie-set-value-in-an-input-without-a-form-tag/
+ 
 -------------------------------------------------------------------------
              
 -------------------------------------------------------------------------
