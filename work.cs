@@ -2129,7 +2129,81 @@ namespace MSTAR_FT_LHS
 }
 
 -------------------------------------------------------------------------
-             
+http://www.autoitx.com/UDF/index.htm?page=html%2Flibfunctions%2F_iecreate.htm
+http://www.autoitx.com/
+https://www.autoitscript.com/site/autoit/downloads/
+https://www.autoitscript.com/autoit3/docs/appendix/SendKeys.htm\
+https://www.autoitscript.com/forum/topic/179156-how-to-auto-login-a-web-page-on-local-nas-using-ie/
+http://yhhuang1966.blogspot.com/2018/05/autoit_61.html
+
+'SAMPLE1
+#include <IE.au3>
+_IEErrorHandlerRegister()  ;註冊並使用一個自定義COM錯誤處理程序.
+
+;;login 
+Local $oIE1 = _IECreate ("http://wsbmesweb01:8088/Login/LoginForm.aspx")
+local $username = _IEGetObjByName ($oIE1,"txt_User_ID")
+local $password = _IEGetObjByName ($oIE1,"txt_Pw")
+local $enter    = _IEGetObjByName ($oIE1,"btn_Login")
+_IEFormElementSetValue ($username, "1074848")
+_IEFormElementSetValue ($password, "O100012826")
+_IEAction($enter, "click")
+_IELoadWait ($oIE1, 300)
+Sleep(100)
+
+;;NEXT Web Page
+_IENavigate($oIE1, "http://wsbmesweb01:8088/Setup/frmViewClassMember.aspx")
+_IELoadWait ($oIE1, 300)
+
+;BU (dropdown list)
+Local $oForm = _IEFormGetObjByName ($oIE1, "aspnetForm")                                        ;"form name"
+Local $oSelect = _IEFormElementGetObjByName ($oForm, "ctl00$ContentPlaceHolder1$Drop_BU")       ;"select name"
+;_IEFormElementOptionselect ($oSelect, 3, 1, "byIndex")
+;_IEFormElementOptionselect ($oSelect, "All", 1, "byText")
+_IEFormElementOptionselect ($oSelect, "TEST", 1, "byValue")
+_IELoadWait ($oIE1, 300)
+
+;課程類別(dropdown list)
+Local $oSelect = _IEFormElementGetObjByName (_IEFormGetObjByName ($oIE1, "aspnetForm"), "ctl00$ContentPlaceHolder1$Drop_Course_Category_ID")       ;"select name"
+_IEFormElementOptionselect ($oSelect, "ARC", 1, "byValue")
+_IELoadWait ($oIE1, 300)
+
+;課程中文 (TEXT)
+local $ctl00_ContentPlaceHolder1_txt_Course_Desc_CH = _IEGetObjByName ($oIE1,"ctl00_ContentPlaceHolder1_txt_Course_Desc_CH")
+_IEFormElementSetValue ($ctl00_ContentPlaceHolder1_txt_Course_Desc_CH, "TARC0045")
+_IELoadWait ($oIE1, 300)
+
+;搜尋 (button)
+Local $serach  = _IEGetObjByName ($oIE1,"ctl00_ContentPlaceHolder1_btnSearch")
+_IEAction($serach, "click")
+_IELoadWait ($oIE1, 300)
+
+;請選擇課程代碼 (dropdown list)
+Local $oSelect = _IEFormElementGetObjByName (_IEFormGetObjByName ($oIE1, "aspnetForm"), "ctl00$ContentPlaceHolder1$Drop_Select_CourseID")       ;"select name"
+_IEFormElementOptionselect ($oSelect, "TARC0045", 1, "byValue")
+_IELoadWait ($oIE1, 300)
+
+;請選擇已開課班級 (dropdown list)
+Local $oSelect = _IEFormElementGetObjByName (_IEFormGetObjByName ($oIE1, "aspnetForm"), "ctl00$ContentPlaceHolder1$Drop_Select_ClassID")       ;"select name"
+_IEFormElementOptionselect ($oSelect, "TARC0045_20180905152359", 1, "byValue")
+_IELoadWait ($oIE1, 300)
+
+;登出
+Local $exit  = _IEGetObjByName ($oIE1,"ctl00_Menu1n5")
+_IEAction($exit, "click")
+_IELoadWait ($oIE1, 300)
+
+
+;關閉網頁
+_IEQuit($oIE1)
+SLEEP(500)
+
+;離開AutoIt3
+Exit
+
+
+'SAMPLE2
+
 -------------------------------------------------------------------------
              
 -------------------------------------------------------------------------
