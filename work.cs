@@ -2135,7 +2135,11 @@ https://www.autoitscript.com/site/autoit/downloads/
 https://www.autoitscript.com/autoit3/docs/appendix/SendKeys.htm\
 https://www.autoitscript.com/forum/topic/179156-how-to-auto-login-a-web-page-on-local-nas-using-ie/
 http://yhhuang1966.blogspot.com/2018/05/autoit_61.html
-
+             
+Dim = Local scope if the variable name doesn't already exist globally (in which case it reuses the global variable!)
+Global = Forces creation of the variable in the Global scope
+Local = Forces creation of the variable in the Local/Function scope
+             
 'SAMPLE1
 #include <IE.au3>
 _IEErrorHandlerRegister()  ;註冊並使用一個自定義COM錯誤處理程序.
