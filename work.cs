@@ -2362,6 +2362,8 @@ https://www.autoitscript.com/autoit3/docs/functions/ClipPut.htm
 ClipPut($TEXT)
 Send("^v")
 https://www.autoitscript.com/forum/topic/72281-can-use-help-with-_ieformgetobjbyname/
+https://www.autoitscript.com/forum/topic/116674-help-to-get-ie-iframe-source/
+https://stackoverflow.com/questions/23020796/autoit-access-and-simulate-click-link-in-iframe-of-website?rq=1
 -------------------------------------------------------------------------
 
 -------------------------------------------------------------------------
