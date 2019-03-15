@@ -2358,6 +2358,10 @@ EndFunc
  
 https://www.autoitscript.com/forum/topic/49205-how-to-get-access-to-elements-embedded-in-a-iframe/
 https://stackoverflow.com/questions/6204021/get-form-name-from-iframe-using-autoit/
+https://www.autoitscript.com/autoit3/docs/functions/ClipPut.htm
+ClipPut($TEXT)
+Send("^v")
+https://www.autoitscript.com/forum/topic/72281-can-use-help-with-_ieformgetobjbyname/
 -------------------------------------------------------------------------
 
 -------------------------------------------------------------------------
