@@ -2356,6 +2356,7 @@ EndFunc
  https://www.autoitscript.com/forum/topic/197738-solved-ie-element-with-an-existing-id-cant-be-found/
  https://www.autoitscript.com/forum/topic/190906-solved-ie-set-value-in-an-input-without-a-form-tag/
  
+https://www.autoitscript.com/forum/topic/49205-how-to-get-access-to-elements-embedded-in-a-iframe/
 -------------------------------------------------------------------------
 
 -------------------------------------------------------------------------
