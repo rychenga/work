@@ -2376,6 +2376,9 @@ https://www.autoitscript.com/forum/topic/195349-how-to-code-it-using-autoit/?tab
 https://www.autoitscript.com/forum/topic/195009-ie_-action-by-click/?tab=comments#comment-1398555
 https://www.autoitscript.com/forum/topic/191939-jquerify-a-web-page-injecting-jquery/?tab=comments#comment-1377088
 https://www.autoitscript.com/forum/topic/191939-jquerify-a-web-page-injecting-jquery/page/2/?tab=comments#comment-1387944
+:: 認為直接在HTML崁入 id="名稱" ，可能還比較快
+https://www.w3schools.com/jquery/tryit.asp?filename=tryjquery_dom_val_get
+https://www.w3schools.com/jquery/tryit.asp?filename=tryjquery_dom_attr_get
 ::
 https://jingyan.baidu.com/article/9989c74604d644f648ecfe03.html
 https://www.cnblogs.com/zhaojin/archive/2011/01/26/1945799.html
