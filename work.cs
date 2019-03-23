@@ -2365,7 +2365,11 @@ https://www.autoitscript.com/forum/topic/72281-can-use-help-with-_ieformgetobjby
 https://www.autoitscript.com/forum/topic/116674-help-to-get-ie-iframe-source/
 https://stackoverflow.com/questions/23020796/autoit-access-and-simulate-click-link-in-iframe-of-website?rq=1
 ::03/23
+:: Auto jquery _IEFormcolletion or _IETAGcollection
 https://www.autoitscript.com/forum/topic/185383-ie-11-automatic-using-jquery/
+https://www.autoitscript.com/forum/topic/81025-ie-automation-using-jquery/
+https://www.autoitscript.com/forum/topic/190115-jquery-in-ie/
+::
 https://jingyan.baidu.com/article/9989c74604d644f648ecfe03.html
 https://www.cnblogs.com/zhaojin/archive/2011/01/26/1945799.html
 https://stackoverflow.com/questions/24970772/pass-information-from-javascript-to-autoit
