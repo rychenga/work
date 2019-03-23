@@ -2369,11 +2369,19 @@ https://stackoverflow.com/questions/23020796/autoit-access-and-simulate-click-li
 https://www.autoitscript.com/forum/topic/185383-ie-11-automatic-using-jquery/
 https://www.autoitscript.com/forum/topic/81025-ie-automation-using-jquery/
 https://www.autoitscript.com/forum/topic/190115-jquery-in-ie/
+::ie.au3 jquery
+https://www.autoitscript.com/forum/topic/197717-browser-automation-for-select2-dropdown-search-and-select/?tab=comments#comment-1418244
+https://www.autoitscript.com/forum/topic/197717-browser-automation-for-select2-dropdown-search-and-select/?tab=comments#comment-1418243
+https://www.autoitscript.com/forum/topic/195349-how-to-code-it-using-autoit/?tab=comments#comment-1400734 
+https://www.autoitscript.com/forum/topic/195009-ie_-action-by-click/?tab=comments#comment-1398555
+https://www.autoitscript.com/forum/topic/191939-jquerify-a-web-page-injecting-jquery/?tab=comments#comment-1377088
+https://www.autoitscript.com/forum/topic/191939-jquerify-a-web-page-injecting-jquery/page/2/?tab=comments#comment-1387944
 ::
 https://jingyan.baidu.com/article/9989c74604d644f648ecfe03.html
 https://www.cnblogs.com/zhaojin/archive/2011/01/26/1945799.html
 https://stackoverflow.com/questions/24970772/pass-information-from-javascript-to-autoit
 https://www.autoitscript.com/forum/topic/191939-jquerify-a-web-page-injecting-jquery/
+
 -------------------------------------------------------------------------
 
 -------------------------------------------------------------------------
