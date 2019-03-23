@@ -2364,6 +2364,12 @@ Send("^v")
 https://www.autoitscript.com/forum/topic/72281-can-use-help-with-_ieformgetobjbyname/
 https://www.autoitscript.com/forum/topic/116674-help-to-get-ie-iframe-source/
 https://stackoverflow.com/questions/23020796/autoit-access-and-simulate-click-link-in-iframe-of-website?rq=1
+::03/23
+https://www.autoitscript.com/forum/topic/185383-ie-11-automatic-using-jquery/
+https://jingyan.baidu.com/article/9989c74604d644f648ecfe03.html
+https://www.cnblogs.com/zhaojin/archive/2011/01/26/1945799.html
+https://stackoverflow.com/questions/24970772/pass-information-from-javascript-to-autoit
+https://www.autoitscript.com/forum/topic/191939-jquerify-a-web-page-injecting-jquery/
 -------------------------------------------------------------------------
 
 -------------------------------------------------------------------------
