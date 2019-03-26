@@ -2386,6 +2386,8 @@ https://stackoverflow.com/questions/24970772/pass-information-from-javascript-to
 https://www.autoitscript.com/forum/topic/191939-jquerify-a-web-page-injecting-jquery/
 ::0325
 http://www.jianyiit.com/post-296.html
+::0326
+https://www.autoitscript.com/forum/topic/195349-how-to-code-it-using-autoit/?tab=comments#comment-1400734
 -------------------------------------------------------------------------
 
 -------------------------------------------------------------------------
