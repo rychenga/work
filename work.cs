@@ -2697,6 +2697,84 @@ Func _jQuerify(ByRef $oIE)
     Return $jQuery
 EndFunc   ;==>_jQuerify
 -------------------------------------------------------------------------
+#include <IE.au3>
+#include <Date.au3>
+#include <MsgBoxConstants.au3>
+#include <FileConstants.au3>
+_IEErrorHandlerRegister()  ;regest error message
+
+$oIE = _IECreate("https://www.hkex.com.hk/Market-Data/Futures-and-Options-Prices/Equity-Index/Hang-Seng-Index-Futures-and-Options?sc_lang=en#&product=HSI")
+MsgBox(0,"pause","Press ok when page is ready")
+
+$jQuery = _jQuerify($oIE)
+$jQuery('.sewvbm > li:nth-child(2)').click()
+_IELoadWait ($oIE, 300)
+
+Msgbox(0,"","Proecess End")
+;_IEQuit($oIE)
+;Exit AutoIt3
+Exit
+
+
+
+Func _jQuerify(ByRef $oIE)
+
+    Local $msie, $jsEval, $jQuery, $otherlib = False
+
+    $msie = Execute('$oIE.document.documentMode')
+
+    If ($msie = "") Or Number($msie) < 11 Then ; an IE version < 11
+        ; create a reference to the javascript eval() function
+        $oIE.document.parentWindow.setTimeout('window.eval = eval', 0)
+        Do
+            Sleep(250)
+            $jsEval = Execute('$oIE.Document.parentwindow.eval')
+        Until IsObj($jsEval)
+
+    Else ; IE version > = 11
+        ; create a reference to the javascript eval() function
+        $oIE.document.parentWindow.setTimeout('document.head.eval = eval', 0)
+        Do
+            Sleep(250)
+            $jsEval = Execute('$oIE.Document.head.eval')
+        Until IsObj($jsEval)
+
+    EndIf
+
+    ; if jQuery is not already loaded then load it
+    If $jsEval("typeof jQuery=='undefined'") Then
+
+        ; check if the '$' (dollar) name is already in use by other library
+        If $jsEval("typeof $=='function'") Then $otherlib = True
+
+        Local $oScript = $oIE.document.createElement('script');
+        $oScript.type = 'text/javascript'
+
+        ; If you want to load jQuery from a disk file use the following statement
+        ; where i.e. jquery-1.9.1.js is the file containing the jQuery source
+        ; (or also use a string variable containing the whole jQuery listing)
+        ;~ $oScript.TextContent = FileRead(@ScriptDir & "\jquery-1.9.1.js") ; <--- from a file
+		$oScript.TextContent = FileRead(@ScriptDir & "\jquery-3.3.1.min.js") ;
+
+        ; If you want to download jQuery from the web use this statement
+        ;$oScript.src = 'https://code.jquery.com/jquery-latest.min.js' ; <--- from an url
+
+
+        $oIE.document.getElementsByTagName('head').item(0).appendChild($oScript)
+        Do
+            Sleep(250)
+        Until $jsEval("typeof jQuery == 'function'")
+    EndIf
+
+    Do
+        Sleep(250)
+        $jQuery = $jsEval("jQuery")
+    Until IsObj($jQuery)
+
+    If $otherlib Then $jsEval('jQuery.noConflict();')
+
+    Return $jQuery
+EndFunc   ;==>_jQuerify
 -------------------------------------------------------------------------             
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
