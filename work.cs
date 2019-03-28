@@ -2389,6 +2389,53 @@ http://www.jianyiit.com/post-296.html
 ::0326
 https://www.autoitscript.com/forum/topic/195349-how-to-code-it-using-autoit/?tab=comments#comment-1400734
 -------------------------------------------------------------------------
+'掃所有tagname
+#include <IE.au3>
+#include <Date.au3>
+#include <MsgBoxConstants.au3>
+#include <FileConstants.au3>
+#include <WinAPIFiles.au3>
+
+_IEErrorHandlerRegister()  ;regest error message
+
+;write log file
+Local $logtxt =  FileOpen("D:\Temp\Taglist.txt",$FO_APPEND)
+; Delete the temporary file.
+FileDelete($logtxt)
+FileWriteLine($logtxt,">>> start "&  _DateTimeFormat(_NowCalc(), 0) &">>>")
+Local $oIE = _IECreate ("http://twtraffic.tra.gov.tw/twrail/TW_Quicksearch.aspx")
+
+FileWriteLine($logtxt,">>> ---------------------------------- Tags iframes -------------------------------------------------- >>>" &  _DateTimeFormat(_NowCalc(), 0) & @CRLF)
+Local $Main_iForms = _IEFrameGetCollection($oIE) ;<--------
+FileWriteLine($logtxt,">>> ObjName =[" & $Main_iForms.name & "] ID =[" & $Main_iForms.id & "]")
+Local $oElements = _IETagNameAllGetCollection($Main_iForms)
+Local $TagN = @extended
+FileWriteLine($logtxt,">>> number of $oIE Tags = " & @extended)
+FileWriteLine($logtxt,">>> number of $oIE Tags = " & $TagN)
+For $i = 0 To ($TagN - 1)
+	Local $oElement =  _IETagNameAllGetCollection($Main_iForms,$i)
+	FileWriteLine($logtxt, ">>> [" & $i & "]Info Tagname:[" & $oElement.tagname & "] id:[" & $oElement.id & "] role:["& $oElement.role & "] Class:[" & $oElement.GetAttribute("class") & "]"& @CRLF)
+
+	;IF $oElement.tagname  = "BUTTON" Then
+		;FileWriteLine($logtxt, ">>> [" & $i & "]Info Tagname:[" & $oElement.tagname & "] id:[" & $oElement.id & "] role:["& $oElement.role & "] Class:[" & $oElement.GetAttribute("class") & "]"& @CRLF)
+	;EndIf
+
+Next
+
+FileWriteLine($logtxt,">>> ---------------------------------- END -------------------------------------------------- >>>" &  _DateTimeFormat(_NowCalc(), 0) & @CRLF)
+;Local $FramUrl = _IEPropertyGet($oFrame, "locationurl")
+;Local $innerthtml = _IEPropertyGet($oIE, "innerhtml")
+;FileWriteLine($logtxt,$innerthtml)
+FileWriteLine($logtxt,">>> ---------------------------------- END -------------------------------------------------- >>>" &  _DateTimeFormat(_NowCalc(), 0) & @CRLF)
+Local $oIE3_Html = _IEDocReadHTML($oIE) ;get doc html
+FileWriteLine($logtxt,$innerthtml)
+FileWriteLine($logtxt,">>> ---------------------------------- END -------------------------------------------------- >>>" &  _DateTimeFormat(_NowCalc(), 0) & @CRLF)
+
+
+
+FileClose($logtxt) ; close log files
+_IEQuit($oIE)
+Exit ;Exit AutoIt3
 
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
