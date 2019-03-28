@@ -2441,6 +2441,261 @@ _IEQuit($oIE)
 Exit ;Exit AutoIt3
 
 -------------------------------------------------------------------------
+#include <IE.au3>
+#include <Date.au3>
+#include <MsgBoxConstants.au3>
+#include <FileConstants.au3>
+#include <WinAPIFiles.au3>
+
+_IEErrorHandlerRegister()  ;regest error message
+
+;get now time
+;Local $DateTime = _DateTimeFormat(_NowCalc(), 0)
+
+;Local $DownPath =  "%userprofile%\Downloads\ExportLHS.xlsx"
+Local $DownPath =  "C:\Users\Jeff.Cheng\Downloads\ExportLHS.xlsx"
+;Local $FileName = "ExportLHS.xlsx"
+Local $ToPath = "D:\Temp\XLSX\"
+
+
+;$CmdLine[nth] ; The nth parameter e.g. 10 if the array contains 10 items.
+;$CmdLineRaw ; This contains myScript.au3 param1 "This is a string parameter" 99.
+;Local $ac = $CmdLine[1]
+;Local $pw = $CmdLine[2]
+;MsgBox(0,"","account:[" & $ac & "] password:[" & $pw & "]")
+Local $ilot_no = $CmdLine[1]
+;MsgBox(0,"","input:[" & $ilot_no & "]")
+
+;write log file
+Local $logtxt =  FileOpen("D:\Temp\log.txt",$FO_APPEND)
+FileWriteLine($logtxt,">>> start "&  _DateTimeFormat(_NowCalc(), 0) &">>>")
+Local $oIE = _IECreate ("http://xxxxxxxxxxxxxxxxxxxx")
+SingIn($oIE,"bbbbb","aaaa")  ;login
+
+_IENavigate($oIE,"http://mtkspapp.mediatek.com/lh")
+_IELoadWait ($oIE, 3000)
+BlockInput(True) ;限制任何外部輸入
+Local $hWnd = WinWait("LH - Internet Explorer", "", 10)
+WinActivate($hWnd)
+
+;Reset
+Local $BReset_Button = _IETagNameGetCollection($oIE, "DIV",98)
+_IEAction($BReset_Button,"click");
+_IELoadWait ($oIE, 300)
+
+;Reset in Create
+;Local $Create_Button  = _IETagNameGetCollection($oIE, "DIV",39)
+;_IEAction($Create_Button,"click")
+;_IELoadWait ($oIE, 300)
+;Sleep(1000)
+;Send("{TAB}")
+;Sleep(1000)
+;Send($ilot_no)
+;Sleep(1000)
+
+;主程式
+;select lot no
+Local $BQuery_Button  = _IETagNameGetCollection($oIE, "DIV",59)
+_IEAction($BQuery_Button,"click")
+_IELoadWait ($oIE, 300)
+Send("{PGUP 2}")
+Sleep(1000)
+Send("{DOWN 2}")
+Sleep(1000)
+Send("{ENTER 2}")
+Sleep(1000)
+Send("{TAB 2}")
+Sleep(1000)
+
+;input lot no
+Local $oInput  = _IETagNameGetCollection($oIE, "input",3)
+;_IEFormElementSetValue($oInput, "rychenga")
+_IEFormElementSetValue($oInput, $ilot_no)
+_IELoadWait ($oIE, 300)
+Sleep(1000)
+Send("{ENTER 2}")
+Sleep(1000)
+
+
+;Link download
+Local $BReset_Button = _IETagNameGetCollection($oIE, "DIV",119)
+_IEAction($BReset_Button,"click");
+_IELoadWait ($oIE, 300)
+Sleep(1000)
+Send("!s")
+Sleep(1000)
+
+
+
+FileClose($logtxt)
+
+;Local $hWnd = WinWait("LH - Internet Explorer", "", 10)
+;WinActivate($hWnd)
+WinClose($hWnd)
+BlockInput(False);解除所有外部輸入
+
+;$FC_NOOVERWRITE (0) = (default) do not overwrite existing files.
+;$FC_OVERWRITE (1) = overwrite existing files.
+;$FC_CREATEPATH (8) = Create destination directory structure if it doesn't exist (See Remarks).
+FileMove($DownPath,$ToPath,1)
+;Msgbox(0,"","Proecess End")
+
+Exit ;Exit AutoIt3
+
+
+
+;;New Web Page in another Web Page
+Func _IECreateTab (ByRef $oIE, $url)
+Local $Count = 0, $oIE2
+
+  $oIE.Navigate ($url, $ie_new_in_tab)
+
+  While 1
+    $oIE2 = _IEAttach($url, "url")
+    If IsObj($oIE2) Then ExitLoop
+    $Count += 1
+    if $Count > 100 then Exit MsgBox (0,"Error","Load expired")
+    Sleep (50)
+  WEND
+
+  _IELoadWait ($oIE2, 300)
+  return $oIE2
+
+EndFunc
+
+;;login funcion
+Func SingIn(ByRef $oIE,$user,$paw)
+	 Local $username = _IEGetObjByName ($oIE,"j_username")
+	 Local $password = _IEGetObjByName ($oIE,"j_password")
+	 Local $enter    = _IEGetObjByName ($oIE,"uidPasswordLogon")
+	 _IEFormElementSetValue ($username, $user)
+	 _IEFormElementSetValue ($password, $paw)
+	 _IEAction($enter, "click")
+     _IELoadWait ($oIE, 3000)
+	 Return $oIE
+EndFunc
+
+;;NEXT Web Page
+Func _IENextPage(ByRef $oIE, $url)
+    _IENavigate($oIE, $url)   ;????
+	_IELoadWait ($oIE, 300)
+	Return $oIE
+	;MsgBox(4096, "The URL2", _IEPropertyGet($oIE, "locationurl"))
+EndFunc
+
+;;DropDown list
+Func _DropDownSet(ByRef $oIE,$oSelect_Name,$input)
+      ;Local $oForm = _IEFormGetObjByName ($oIE, "aspnetForm")                ;"form name"
+	  ;Local $oSelect = _IEFormElementGetObjByName ($oForm, $oSelect_Name)    ;"select name"
+	  ;$iOptionCount = $oSelect.length
+	  ;ConsoleWrite("Length = " & $iOptionCount & @LF)
+      ;For $i = 1 To 10
+      ;   For $n = 0 To $iOptionCount - 1
+      ;       _IEFormElementOptionselect ($oSelect, $n, 1, "byIndex")
+      ;        Sleep(1000)
+      ;   Next
+      ;Next
+      ;_IEFormElementOptionselect ($oSelect, 3, 1, "byIndex")
+      ;_IEFormElementOptionselect ($oSelect, "All", 1, "byText")
+	  Local $oSelect = _IEFormElementGetObjByName (_IEFormGetObjByName ($oIE, "aspnetForm"), $oSelect_Name)
+	  _IEFormElementOptionSelect($oSelect, $input, 1, "byValue")
+	  _IELoadWait ($oIE, 300)
+	  Return $oIE
+EndFunc
+
+;;TEXT INPUT
+Func _TEXTSet(ByRef $oIE,$oID_Name,$input)
+     _IEFormElementSetValue (_IEGetObjByName ($oIE,$oID_Name), $input)
+     _IELoadWait ($oIE, 300)
+	 Return $oIE
+EndFunc
+
+;;Button
+Func _Button(ByRef $oIE,$oID_Name)
+     _IEAction(_IEGetObjByName ($oIE,$oID_Name), "click")
+     _IELoadWait ($oIE, 300)
+	 Return $oIE
+EndFunc
+
+;;logout function
+Func _Logout(ByRef $oIE)
+     Local $oLinks, $oForm, $sURL, $iFlag = 0
+
+     $oLinks = _IETagNameGetCollection($oIE, "a")
+     If @error Then Exit 1
+
+     $iFlag = 0
+     For $oLink In $oLinks
+         If StringInStr(_IEPropertyGet($oLink, "outertext"), "Logout") > 0 Then
+             $iFlag = 1
+             _IEAction($oLink, "focus")
+             _IEAction($oLink, "click")
+             ExitLoop
+         EndIf
+     Next
+     If Not $iFlag Then Exit 2
+	 _IELoadWait ($oIE, 3000)
+	 Return $oIE
+EndFunc
+
+Func _jQuerify(ByRef $oIE)
+
+    Local $msie, $jsEval, $jQuery, $otherlib = False
+
+    $msie = Execute('$oIE.document.documentMode')
+
+    If ($msie = "") Or Number($msie) < 11 Then ; an IE version < 11
+        ; create a reference to the javascript eval() function
+        $oIE.document.parentWindow.setTimeout('window.eval = eval', 0)
+        Do
+            Sleep(250)
+            $jsEval = Execute('$oIE.Document.parentwindow.eval')
+        Until IsObj($jsEval)
+
+    Else ; IE version > = 11
+        ; create a reference to the javascript eval() function
+        $oIE.document.parentWindow.setTimeout('document.head.eval = eval', 0)
+        Do
+            Sleep(250)
+            $jsEval = Execute('$oIE.Document.head.eval')
+        Until IsObj($jsEval)
+
+    EndIf
+
+    ; if jQuery is not already loaded then load it
+    If $jsEval("typeof jQuery=='undefined'") Then
+
+        ; check if the '$' (dollar) name is already in use by other library
+        If $jsEval("typeof $=='function'") Then $otherlib = True
+
+        Local $oScript = $oIE.document.createElement('script');
+        $oScript.type = 'text/javascript'
+
+        ; If you want to load jQuery from a disk file use the following statement
+        ; where i.e. jquery-1.9.1.js is the file containing the jQuery source
+        ; (or also use a string variable containing the whole jQuery listing)
+        ;~ $oScript.TextContent = FileRead(@ScriptDir & "\jquery-1.9.1.js") ; <--- from a file
+		$oScript.TextContent = FileRead(@ScriptDir & "\jquery-3.3.1.min.js") ;
+
+        ; If you want to download jQuery from the web use this statement
+        ;$oScript.src = 'https://code.jquery.com/jquery-latest.min.js' ; <--- from an url
+
+
+        $oIE.document.getElementsByTagName('head').item(0).appendChild($oScript)
+        Do
+            Sleep(250)
+        Until $jsEval("typeof jQuery == 'function'")
+    EndIf
+
+    Do
+        Sleep(250)
+        $jQuery = $jsEval("jQuery")
+    Until IsObj($jQuery)
+
+    If $otherlib Then $jsEval('jQuery.noConflict();')
+
+    Return $jQuery
+EndFunc   ;==>_jQuerify
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------             
 -------------------------------------------------------------------------
