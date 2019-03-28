@@ -2398,12 +2398,15 @@ https://www.autoitscript.com/forum/topic/195349-how-to-code-it-using-autoit/?tab
 
 _IEErrorHandlerRegister()  ;regest error message
 
+Local $Url = $CmdLine[1]
+
+
 ;write log file
 Local $logtxt =  FileOpen("D:\Temp\Taglist.txt",$FO_APPEND)
 ; Delete the temporary file.
 FileDelete($logtxt)
 FileWriteLine($logtxt,">>> start "&  _DateTimeFormat(_NowCalc(), 0) &">>>")
-Local $oIE = _IECreate ("http://twtraffic.tra.gov.tw/twrail/TW_Quicksearch.aspx")
+Local $oIE = _IECreate ($Url)
 
 FileWriteLine($logtxt,">>> ---------------------------------- Tags iframes -------------------------------------------------- >>>" &  _DateTimeFormat(_NowCalc(), 0) & @CRLF)
 Local $Main_iForms = _IEFrameGetCollection($oIE) ;<--------
@@ -2428,7 +2431,7 @@ FileWriteLine($logtxt,">>> ---------------------------------- END --------------
 ;FileWriteLine($logtxt,$innerthtml)
 FileWriteLine($logtxt,">>> ---------------------------------- END -------------------------------------------------- >>>" &  _DateTimeFormat(_NowCalc(), 0) & @CRLF)
 Local $oIE3_Html = _IEDocReadHTML($oIE) ;get doc html
-FileWriteLine($logtxt,$innerthtml)
+FileWriteLine($logtxt,$oIE3_Html)
 FileWriteLine($logtxt,">>> ---------------------------------- END -------------------------------------------------- >>>" &  _DateTimeFormat(_NowCalc(), 0) & @CRLF)
 
 
