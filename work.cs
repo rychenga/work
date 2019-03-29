@@ -2775,7 +2775,44 @@ Func _jQuerify(ByRef $oIE)
 
     Return $jQuery
 EndFunc   ;==>_jQuerify
--------------------------------------------------------------------------             
+-------------------------------------------------------------------------
+::VS 2010 常用熱鍵
+為了怕自己忘記，記錄一下VS 2010 中程式碼展開跟縮起來的快捷鍵
+展開：Ctrl (不放) + M + L
+縮合：Ctrl (不放) + M + H
+大綱縮合：Ctrl (不放) + M + O
+大綱展開：Ctrl (不放) + M + M
+CTRL + K CTRL + D 將整份文件的程式碼自動排版
+
+:::C# 小用法
+::方法一
+        public enum enExcelCol
+        {
+            /// <summary>
+            /// column A
+            /// </summary>
+            Lotid=1,   <--定義啟始值，後面自動連續下去
+            /// <summary>
+            /// column B
+            /// </summary>
+            description, //2
+            colNew,
+            dd,
+            saa,
+            ff
+        }
+		
+		Description += objExcel.GetCellValue(iSheetName, iLine++, (int)enExcelCol.Lotid).Trim();
+
+::如果一次要連續抓好幾個欄位的值
+int iLine = 13;
+                Description += objExcel.GetCellValue(iSheetName, iLine++, 1).Trim();
+                Description += objExcel.GetCellValue(iSheetName, iLine++, 1).Trim();
+                Description += objExcel.GetCellValue(iSheetName, iLine++, 1).Trim();
+                Description += objExcel.GetCellValue(iSheetName, iLine++, 1).Trim();
+                Description += objExcel.GetCellValue(iSheetName, iLine++, 1).Trim();
+                Description += objExcel.GetCellValue(iSheetName, iLine++, 1).Trim();		
+		
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
