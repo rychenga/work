@@ -2814,5 +2814,15 @@ int iLine = 13;
                 Description += objExcel.GetCellValue(iSheetName, iLine++, 1).Trim();		
 		
 -------------------------------------------------------------------------
+WinSetState($hWnd, "", @SW_SHOW) ; Set the state of the Notepad window to "show".
+Sleep(2000)
+Local $BSave = WinWait("File Download", "", 10) ; lock IE GUI
+WinSetState($BSave, "", @SW_SHOW) ; Set the state of the Notepad window to "show".
+ControlClick($BSave, "", "[CLASS:Button; INSTANCE:2]") ;Click Save
+Sleep(2000)
+Local $BSave = WinWait("另存新檔", "", 10) ; lock IE GUI
+WinSetState($BSave, "", @SW_SHOW) ; Set the state of the Notepad window to "show".
+ControlClick($BSave, "", "[CLASS:Button; INSTANCE:2]") ;Click Save
+Sleep(2000)
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
