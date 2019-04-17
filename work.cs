@@ -2825,4 +2825,12 @@ WinSetState($BSave, "", @SW_SHOW) ; Set the state of the Notepad window to "show
 ControlClick($BSave, "", "[CLASS:Button; INSTANCE:2]") ;Click Save
 Sleep(2000)
 -------------------------------------------------------------------------
+::20190417
+https://stackoverflow.com/questions/39073247/how-to-get-confirm-box-return-value-in-asp-net-c-sharp
+https://www.codeproject.com/Questions/1192829/Csharp-ASP-NET-how-to-get-a-confirm-message-box-fr
+http://www.blueshop.com.tw/board/FUM20041006161839LRJ/BRD20101213105317KIR.html
+https://dotblogs.com.tw/jimmyyu/archive/2009/06/07/8712.aspx
+
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
 -------------------------------------------------------------------------
