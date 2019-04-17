@@ -2830,7 +2830,10 @@ https://stackoverflow.com/questions/39073247/how-to-get-confirm-box-return-value
 https://www.codeproject.com/Questions/1192829/Csharp-ASP-NET-how-to-get-a-confirm-message-box-fr
 http://www.blueshop.com.tw/board/FUM20041006161839LRJ/BRD20101213105317KIR.html
 https://dotblogs.com.tw/jimmyyu/archive/2009/06/07/8712.aspx
-
+http://shaurong.blogspot.com/2017/06/c-aspnet.html
+http://codeverge.com/asp.net.web-forms/confirm-message-box-with-ok-or-cancel-optio/431380
+https://www.aspsnippets.com/Articles/Server-Side-Code-Behind-Yes-No-Confirmation-Message-Box-in-ASPNet.aspx
+https://forums.asp.net/t/1385869.aspx?Confirm+Message+Box+with+OK+or+Cancel+option+in+C+
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
