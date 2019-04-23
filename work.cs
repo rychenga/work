@@ -2835,5 +2835,68 @@ http://codeverge.com/asp.net.web-forms/confirm-message-box-with-ok-or-cancel-opt
 https://www.aspsnippets.com/Articles/Server-Side-Code-Behind-Yes-No-Confirmation-Message-Box-in-ASPNet.aspx
 https://forums.asp.net/t/1385869.aspx?Confirm+Message+Box+with+OK+or+Cancel+option+in+C+
 -------------------------------------------------------------------------
+@ECHO OFF
+setlocal enabledelayedexpansion
+
+::取年月日
+For /f "tokens=1-3 delims=/ " %%a in ('date /t') do (set datetime=%%a%%b%%c)
+
+::各別取年、月、日
+set years=%date:~0,4%
+set month=%date:~5,2%
+set day=%date:~8,2%
+
+::取時、分、秒
+set time=%time:~0,2%%time:~3,2%%time:~6,2%
+
+::檔案及路徑設定1
+set file1=SE2000_G1.csv
+set path1=D:\Temp\XML
+set target1=SE2000_WB-2FFAB-N001_G1_%datetime%_%time%.csv
+
+::檔案及路徑設定2
+set file2=SE2000_G2.csv
+set path2=D:\Temp\XML
+set target2=SE2000_WB-2FFAB-N001_G2_%datetime%_%time%.csv
+
+::備份路徑
+set BackupPath=D:\SE2000_DATA
+
+:START
+::判斷D:\是否有檔案，若沒有則跳下一個檔案
+IF NOT EXIST "D:\%file1%" ( GOTO NEXT )
+
+::備份至backup
+copy /Y D:\%file1% %BackupPath%\%target1%
+
+::判斷路徑存不存在，若不存在則建立路徑。
+set lookup=0
+IF EXIST "%path1%\%years%\%month%\%day%\" (set lookup=1)
+IF %lookup% EQU 0 ( mkdir %path1%\%years%\%month%\%day%\)
+
+::判斷檔案存不存在，若存在則copy 至指定路徑。
+set cp=0
+IF EXIST "D:\%file1%" (set cp=1)
+IF %cp% EQU 1 (move /Y D:\%file1%  %path1%\%years%\%month%\%day%\%target1% )
+
+:NEXT
+::判斷D:\是否有檔案，若沒有則離開程式
+IF NOT EXIST "D:\%file2%" ( GOTO EXIT )
+
+::備份至backup
+copy /Y D:\%file2% %BackupPath%\%target2%
+
+::判斷路徑存不存在，若不存在則建立路徑。
+set lookup=0
+IF EXIST "%path2%\%years%\%month%\%day%\" (set lookup=1)
+IF %lookup% EQU 0 ( mkdir %path2%\%years%\%month%\%day%\)
+
+::判斷檔案存不存在，若存在則copy 至指定路徑。
+set cp=0
+IF EXIST "D:\%file2%" (set cp=1)
+IF %cp% EQU 1 (move /Y D:\%file2%  %path2%\%years%\%month%\%day%\%target2% )
+
+:EXIT
+
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
