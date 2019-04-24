@@ -2897,6 +2897,32 @@ IF EXIST "D:\%file2%" (set cp=1)
 IF %cp% EQU 1 (move /Y D:\%file2%  %path2%\%years%\%month%\%day%\%target2% )
 
 :EXIT
+-------------------------------------------------------------------------
+::[batchfile sample]
+::強制顯示為 6 為 06(兩位數)
+::Digital complement two digit length
+set %2=6
+set s=
+set a=
+set /a a=%2+100
+set s=!s! !a:~1!
+echo "OUT: "%s%
 
+::Digital complement two digit length
+set s=
+set a=
+set /a a=%2+100
+set s=!s! !a:~1!
+::echo "OUT: "%s%
+
+::Digital complement two digit length
+set s=
+set a=
+FOR /L %%i in (1,1,%2) DO ( 
+set /a a=%%i+100
+set s=!s! !a:~1!
+)
+::echo "OUT: "%s%
+-------------------------------------------------------------------------
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
