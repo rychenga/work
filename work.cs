@@ -2924,5 +2924,38 @@ set s=!s! !a:~1!
 )
 ::echo "OUT: "%s%
 -------------------------------------------------------------------------
+::取年月日
+For /f "tokens=1-3 delims=/ " %%a in ('date /t') do (set datetime=%%a%%b%%c)
+
+::各別取年、月、日
+set years=%date:~0,4%
+set month=%date:~5,2%
+set day=%date:~8,2%
+
+::時
+set hour=%time:~0,2%
+set s=
+set a=
+set /a a=%hour%+100
+set s=!s!!a:~1!
+set hour=%s%
+::分
+set min=%time:~3,2%
+set s=
+set a=
+set /a a=%min%+100
+set s=!s!!a:~1!
+set min=%s%
+::秒
+set ss=%time:~6,2%
+set s=
+set a=
+set /a a=%ss%+100
+set s=!s!!a:~1!
+set ss=%s%
+
+::取時、分、秒
+::set time=%time:~0,2%%time:~3,2%%time:~6,2%
+set time=%hour%%min%%ss%
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
