@@ -2977,7 +2977,14 @@ using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "system_
     outputFile.WriteLine("[" + DateTime.Now.ToString("yyyyMMddHHmmss") + "] CMD >>> [" + psi.Arguments.ToString() + "]");
     outputFile.WriteLine("[" + DateTime.Now.ToString("yyyyMMddHHmmss") + "] CMD_Return >>> [" + process.StandardOutput.ReadToEnd() + "]");
 }
+// Append text to an existing file named "system.log".
+docPath = Server.MapPath("~/log/");
+using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "system_" + DateTime.Now.ToString("yyyyMMdd") + ".log"), true))
+{
+    outputFile.WriteLine("[" + DateTime.Now.ToString("yyyyMMddHHmmss") + "][" + Request.RawUrl.ToString() + "][" + UserInfo + "] Exception >>> " + ex.ToString());
+}
 -------------------------------------------------------------------------
+
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
