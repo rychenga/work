@@ -2970,7 +2970,13 @@ string docPath = @"c:\";
       {
           outputFile.WriteLine(ex.ToString());
       }
-
+string docPath = Server.MapPath("~/log/"); //system log used
+//using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "system.log"), true))
+using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "system_" + DateTime.Now.ToString("yyyyMMdd") + ".log"), true))
+{
+    outputFile.WriteLine("[" + DateTime.Now.ToString("yyyyMMddHHmmss") + "] CMD >>> [" + psi.Arguments.ToString() + "]");
+    outputFile.WriteLine("[" + DateTime.Now.ToString("yyyyMMddHHmmss") + "] CMD_Return >>> [" + process.StandardOutput.ReadToEnd() + "]");
+}
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
