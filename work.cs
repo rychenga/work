@@ -2983,6 +2983,13 @@ using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "system_
 {
     outputFile.WriteLine("[" + DateTime.Now.ToString("yyyyMMddHHmmss") + "][" + Request.RawUrl.ToString() + "][" + UserInfo + "] Exception >>> " + ex.ToString());
 }
+HttpContext _SessionID = HttpContext.Current;
+// Append text to an existing file named "system.log".
+string docPath = Server.MapPath("~/log/");
+using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "system_" + DateTime.Now.ToString("yyyyMMdd") + ".log"), true))
+{
+    outputFile.WriteLine("[" + DateTime.Now.ToString("yyyyMMddHHmmss") + "][" + Request.RawUrl.ToString() + "][" + _SessionID.Session.SessionID.ToString() + "][" + sUserID + "] Login Successful >>> ");
+}
 -------------------------------------------------------------------------
 
 -------------------------------------------------------------------------
