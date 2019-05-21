@@ -2991,6 +2991,398 @@ using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "system_
     outputFile.WriteLine("[" + DateTime.Now.ToString("yyyyMMddHHmmss") + "][" + Request.RawUrl.ToString() + "][" + _SessionID.Session.SessionID.ToString() + "][" + sUserID + "] Login Successful >>> ");
 }
 -------------------------------------------------------------------------
+http://www.my97.net/demo/index.htm
+
+https://www.google.com/search?rlz=1C1GCEU_zh-TWTW821TW821&ei=IyLiXMSgJ5P9_wTAr7nQDA&q=ASP.NET+%22WdatePicker%22+%E4%BA%8B%E4%BB%B6&oq=ASP.NET+%22WdatePicker%22+%E4%BA%8B%E4%BB%B6&gs_l=psy-ab.3...6455.8322..8454...0.0..0.192.192.0j1......0....1..gws-wiz.OyCb9N0NOvQ
+http://www.my97.net/demo/resource/2.5.asp
+http://www.my97.net/demo/index.htm?3.asp
+http://www.my97.net/demo/resource/999.asp#m5
+
+https://www.google.com/search?rlz=1C1GCEU_zh-TWTW821TW821&ei=N0biXOG0G_SFr7wPhaKFIA&q=asp.net+alter+%E8%AE%8A%E6%95%B8&oq=asp.net+alter+%E8%AE%8A%E6%95%B8&gs_l=psy-ab.3...356710.359177..360307...0.0..0.68.176.3......0....1..gws-wiz.......0i8i30j33i160.ZqtsECciOrA
+https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/220322/
+https://www.w3schools.com/js/js_strings.asp
+https://www.w3schools.com/js/js_strings.asp
+http://www.my97.net/demo/index.htm
+
+http://welkingunther.pixnet.net/blog/post/32084577-%28javascript%29%E6%97%A5%E6%9C%9F%E8%99%95%E7%90%86
+https://cythilya.github.io/2017/05/17/javascript-date-add-days/
+https://segmentfault.com/a/1190000000344899
+
+::05/21
+<input runat="server" id="txt_ReCert_Month_2" value="" type="text" maxlength="4" style="width:35px" onclick="WdatePicker({isShowClear:false,readOnly:true,dateFmt:'MMdd'})"/>                
+<input type="text" id="d523" onclick="WdatePicker({el:'d523',dateFmt:'yyyy/MM/dd',onpicked:pickedFunc})" size="5"  style="width:35px"/>
+<input type="text" id="d523_y" size="5"/>
+
+
+ctl00_ContentPlaceHolder1_Drop_ReCert_Frequency
+
+ctl00_ContentPlaceHolder1_txt_ReCert_Month_1
+ctl00_ContentPlaceHolder1_txt_ReCert_Month_2
+
+
+d523
+ctl00_ContentPlaceHolder1_d523
+
+d523_y
+ctl00_ContentPlaceHolder1_d523_y
+
+
+$dp.$('ctl00_ContentPlaceHolder1_d523_y').value=$dp.cal.getP('M') + $dp.cal.getP('d');
+$dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_2').value=$dp.cal.getP('M') + $dp.cal.getP('d')
+
+[20190520]
+<!--20190516 jeff add by AP2019030022-->
+<script type="text/javascript">
+function pickedFunc() 
+{ 
+//    alert($dp.$('d523').value);
+    alert('"+aaa+"');
+//    $dp.$('d523_y').value=$dp.cal.getP('M') + $dp.cal.getP('d');
+    $dp.$('ctl00_ContentPlaceHolder1_d523_y').value=$dp.cal.getP('M') + $dp.cal.getP('d');
+    $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_2').value=$dp.cal.getP('M') + $dp.cal.getP('d');
+    alert('"+bbb+"');
+//    $dp.$('d523_y').value=$dp.$DV('d523',{d:3});
+    var startDate =$dp.$('d523').value;
+    alert(startDate);
+    alert('"+ccc+"');
+    var start_date = new Date(startDate);
+    alert(start_date);
+    alert(start_date.getDate());
+    alert('"+ddd+"');
+    var days = new Date();
+    days.setDate(new Date(startDate).getDate() + 10);
+    alert(days);
+    alert('"+eee+"');
+    alert(days.getMonth());
+    alert(days.getDate());
+     $dp.$('d523_y').value=days.getMonth() + days.getDate();
+     alert('"+fff+"');
+     $dp.$('d523_y').value=new Date(days).Format("MMdd");
+} 
+</script>
+
+<input runat="server" id="txt_ReCert_Month_1" value="" type="text" maxlength="4" style="width:35px" onclick="WdatePicker({isShowClear:false,readOnly:true,dateFmt:'MMdd'})"/>
+<input runat="server" id="txt_ReCert_Month_2" value="" type="text" maxlength="4" style="width:35px" onclick="WdatePicker({isShowClear:false,readOnly:true,dateFmt:'MMdd'})"/>
+
+
+[20190521]
+<input runat="server" id="txt_ReCert_Month_1" value="" type="text" maxlength="4" style="width:35px" onclick="WdatePicker({isShowClear:false,readOnly:true,dateFmt:'MMdd'})"/>
+<input runat="server" type="text" id="d523" onclick="WdatePicker({el:this,dateFmt:'MMdd',onpicked:pickedFunc})" size="5"  style="width:35px"/>
+<input runat="server" type="text" id="d523_y" size="5"/> 年
+				
+<!--20190516 jeff add by AP2019030022-->
+<script type="text/javascript">
+function pickedFunc() 
+{ 
+    alert($dp.$('ctl00_ContentPlaceHolder1_d523').value);
+    alert($dp.$('ctl00_ContentPlaceHolder1_Drop_ReCert_Frequency').value);
+    alert('"+aaa+"');
+    $dp.$('ctl00_ContentPlaceHolder1_d523_y').value=$dp.cal.getP('M') + $dp.cal.getP('d');
+    $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_2').value=$dp.cal.getP('M') + $dp.cal.getP('d');
+    alert('"+bbb+"');
+    var startDate =$dp.$('ctl00_ContentPlaceHolder1_d523').value;
+    alert(startDate);
+    alert('"+ccc+"');
+    var start_date = new Date(startDate);
+    alert(start_date);
+    alert(start_date.getDate());
+    alert('"+ddd+"');
+    var days = new Date();
+    days.setDate(new Date(startDate).getDate() + 10);
+    alert(days);
+    alert('"+eee+"');
+    alert(days.getMonth());
+    alert(days.getDate());
+    alert('"+fff+"');
+//    $dp.$('ctl00_ContentPlaceHolder1_d523_y').value= days.getFullYear()+ '/' +GetFormatDate((days.getMonth()+1)) + '/' +GetFormatDate(days.getDate());
+    $dp.$('ctl00_ContentPlaceHolder1_d523_y').value= GetFormatDate((days.getMonth()+1)) + GetFormatDate(days.getDate());
+    alert($dp.$('ctl00_ContentPlaceHolder1_d523_y').value)
+    alert('"+ggg+"');
+//    $dp.$('ctl00_ContentPlaceHolder1_d523_y').value=days.getMonth() + days.getDate();
+//    $dp.$('ctl00_ContentPlaceHolder1_d523_y').value=new Date(days).Format("MMdd");
+    
+}
+
+function GetFormatDate(InputValue)
+{
+  if(InputValue<10)
+  {
+    InputValue='0'+InputValue;
+  }
+ 
+   return InputValue;
+}
+</script>
+
+[20190521-2]
+<!--20190516 jeff add by AP2019030022-->
+<script type="text/javascript">
+function pickedFunc() 
+{ 
+    alert($dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_1').value);
+    alert($dp.$('ctl00_ContentPlaceHolder1_Drop_ReCert_Frequency').value);
+    var startDate =$dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_1').value;    
+//    var start_date = new Date(startDate);
+//   alert($dp.cal.getP('y'));
+//   alert($dp.cal.getP('M'));
+//   alert($dp.cal.getP('d'));
+   var start_date= new Date($dp.cal.getP('y'),$dp.cal.getP('M'),$dp.cal.getP('d'));
+   alert(start_date);
+//    var days = new Date();
+//    days.setDate(new Date(startDate).getDate() + 10);
+
+//    var days = DateAdd("d ", 5, start_date);
+    var days = DateAdd("m ", 6, start_date);
+    alert(days);
+//    $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_2').value= GetFormatDate((days.getMonth()+1)) + GetFormatDate(days.getDate());
+    $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_2').value= GetFormatDate((days.getMonth())) + GetFormatDate(days.getDate());
+    
+}
+
+function GetFormatDate(InputValue)
+{
+  if(InputValue<10)
+  {
+    InputValue='0'+InputValue;
+  }
+ 
+   return InputValue;
+}
+
+function DateAdd(interval, number, date) {
+    switch (interval) {
+    case "y ": {
+        date.setFullYear(date.getFullYear() + number);
+        return date;
+        break;
+    }
+    case "q ": {
+        date.setMonth(date.getMonth() + number * 3);
+        return date;
+        break;
+    }
+    case "m ": {
+        date.setMonth(date.getMonth() + number);
+        return date;
+        break;
+    }
+    case "w ": {
+        date.setDate(date.getDate() + number * 7);
+        return date;
+        break;
+    }
+    case "d ": {
+        date.setDate(date.getDate() + number);
+        return date;
+        break;
+    }
+    case "h ": {
+        date.setHours(date.getHours() + number);
+        return date;
+        break;
+    }
+    case "m ": {
+        date.setMinutes(date.getMinutes() + number);
+        return date;
+        break;
+    }
+    case "s ": {
+        date.setSeconds(date.getSeconds() + number);
+        return date;
+        break;
+    }
+    default: {
+        date.setDate(d.getDate() + number);
+        return date;
+        break;
+    }
+    }
+}
+</script>
+
+[20190521-3]
+<!--20190516 jeff add by AP2019030022-->
+<script type="text/javascript">
+function pickedFunc() 
+{ 
+//    alert($dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_1').value);
+//    alert($dp.$('ctl00_ContentPlaceHolder1_Drop_ReCert_Frequency').value);
+   var startDate =$dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_1').value;    
+   var start_date= new Date($dp.cal.getP('y'),$dp.cal.getP('M'),$dp.cal.getP('d'));   
+
+   if($dp.$('ctl00_ContentPlaceHolder1_Drop_ReCert_Frequency').value == "SixMonthly")
+   {
+     var days = DateAdd("M ", 6, start_date);
+     $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_2').value= GetFormatDate((days.getMonth())) + GetFormatDate(days.getDate());
+     alert(days);
+     alert($dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_2').value);
+   }else if($dp.$('ctl00_ContentPlaceHolder1_Drop_ReCert_Frequency').value == "Season")
+   {
+     var days = DateAdd("M ", 3, start_date);
+     $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_2').value= GetFormatDate((days.getMonth())) + GetFormatDate(days.getDate());
+     days = DateAdd("M ", 6, start_date);
+     $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_3').value= GetFormatDate((days.getMonth())) + GetFormatDate(days.getDate());
+     days = DateAdd("M ", 9, start_date);
+     $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_4').value= GetFormatDate((days.getMonth())) + GetFormatDate(days.getDate());
+   }
+
+////    var days = DateAdd("d ", 5, start_date);
+//    var days = DateAdd("m ", 6, start_date);
+////    $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_2').value= GetFormatDate((days.getMonth()+1)) + GetFormatDate(days.getDate());
+//    $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_2').value= GetFormatDate((days.getMonth())) + GetFormatDate(days.getDate());
+    
+}
+
+function GetFormatDate(InputValue)
+{
+  if(InputValue<10)
+  {
+    InputValue='0'+InputValue;
+  }
+ 
+   return InputValue;
+}
+
+function DateAdd(interval, number, date) {
+    switch (interval) {
+    case "y ": {
+        date.setFullYear(date.getFullYear() + number);
+        return date;
+        break;
+    }
+    case "q ": {
+        date.setMonth(date.getMonth() + number * 3);
+        return date;
+        break;
+    }
+    case "M ": {
+        date.setMonth(date.getMonth() + number);
+        return date;
+        break;
+    }
+    case "w ": {
+        date.setDate(date.getDate() + number * 7);
+        return date;
+        break;
+    }
+    case "d ": {
+        date.setDate(date.getDate() + number);
+        return date;
+        break;
+    }
+    case "h ": {
+        date.setHours(date.getHours() + number);
+        return date;
+        break;
+    }
+    case "m ": {
+        date.setMinutes(date.getMinutes() + number);
+        return date;
+        break;
+    }
+    case "s ": {
+        date.setSeconds(date.getSeconds() + number);
+        return date;
+        break;
+    }
+    default: {
+        date.setDate(d.getDate() + number);
+        return date;
+        break;
+    }
+    }
+}
+</script>
+
+[20190521-5]
+<!--20190516 jeff add by AP2019030022-->
+<script type="text/javascript">
+function pickedFunc() 
+{ 
+   var startDate =$dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_1').value;    
+   var start_date= new Date($dp.cal.getP('y'),$dp.cal.getP('M'),$dp.cal.getP('d'));   
+
+   if($dp.$('ctl00_ContentPlaceHolder1_Drop_ReCert_Frequency').value == "SixMonthly")
+   {
+     var days = DateAdd("M ", 6, start_date);
+     $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_2').value= GetFormatDate((days.getMonth())) + GetFormatDate(days.getDate());
+     alert($dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_2').value);
+   }else if($dp.$('ctl00_ContentPlaceHolder1_Drop_ReCert_Frequency').value == "Season")
+   {
+     var days = DateAdd("M ", 3, start_date);
+     $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_2').value= GetFormatDate((days.getMonth())) + GetFormatDate(days.getDate());
+     days = DateAdd("M ", 6, start_date);
+     $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_3').value= GetFormatDate((days.getMonth())) + GetFormatDate(days.getDate());
+     days = DateAdd("M ", 9, start_date);
+     $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_4').value= GetFormatDate((days.getMonth())) + GetFormatDate(days.getDate());
+   }
+}
+
+function GetFormatDate(InputValue)
+{
+  if(InputValue == '0')
+  {
+    InputValue='12'; 
+  }
+  if(InputValue<10)
+  {
+    InputValue='0'+InputValue;
+  }
+ 
+   return InputValue;
+}
+
+function DateAdd(interval, number, date) {
+    switch (interval) {
+    case "y ": {
+        date.setFullYear(date.getFullYear() + number);
+        return date;
+        break;
+    }
+    case "q ": {
+        date.setMonth(date.getMonth() + number * 3);
+        return date;
+        break;
+    }
+    case "M ": {
+        date.setMonth(date.getMonth() + number);
+        return date;
+        break;
+    }
+    case "w ": {
+        date.setDate(date.getDate() + number * 7);
+        return date;
+        break;
+    }
+    case "d ": {
+        date.setDate(date.getDate() + number);
+        return date;
+        break;
+    }
+    case "h ": {
+        date.setHours(date.getHours() + number);
+        return date;
+        break;
+    }
+    case "m ": {
+        date.setMinutes(date.getMinutes() + number);
+        return date;
+        break;
+    }
+    case "s ": {
+        date.setSeconds(date.getSeconds() + number);
+        return date;
+        break;
+    }
+    default: {
+        date.setDate(d.getDate() + number);
+        return date;
+        break;
+    }
+    }
+}
+
+</script>
 
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
