@@ -3384,6 +3384,101 @@ function DateAdd(interval, number, date) {
 
 </script>
 
+[20190521-6]
+<!--20190516 jeff add by AP2019030022-->
+<script type="text/javascript">
+function pickedFunc() 
+{ 
+   var startDate =$dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_1').value;    
+   var start_date= new Date($dp.cal.getP('y'),$dp.cal.getP('M'),$dp.cal.getP('d'));   
+
+   if($dp.$('ctl00_ContentPlaceHolder1_Drop_ReCert_Frequency').value == "SixMonthly")
+   {
+     var days = DateAdd("M ", 6, start_date);
+//     alert(days);
+//     alert(days.getMonth());
+//     alert(days.getDate());
+     $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_2').value= GetFormatDate((days.getMonth())) + GetFormatDate(days.getDate());
+   }else if($dp.$('ctl00_ContentPlaceHolder1_Drop_ReCert_Frequency').value == "Season")
+   {
+     var days = DateAdd("M ", 3, start_date);
+     $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_2').value= GetFormatDate((days.getMonth())) + GetFormatDate(days.getDate());
+     days = DateAdd("M ", 6, start_date);
+     $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_3').value= GetFormatDate((days.getMonth())) + GetFormatDate(days.getDate());
+     days = DateAdd("M ", 9, start_date);
+     $dp.$('ctl00_ContentPlaceHolder1_txt_ReCert_Month_4').value= GetFormatDate((days.getMonth())) + GetFormatDate(days.getDate());
+   }
+}
+
+function GetFormatDate(InputValue)
+{
+  if(InputValue == '0')
+  {
+    InputValue='12'; 
+  }
+  if(InputValue<10)
+  {
+    InputValue='0'+InputValue;
+  }
+  if(InputValue>=10)
+  {
+    InputValue=''+InputValue;
+  }
+   return InputValue;
+}
+
+function DateAdd(interval, number, date) {
+    switch (interval) {
+    case "y ": {
+        date.setFullYear(date.getFullYear() + number);
+        return date;
+        break;
+    }
+    case "q ": {
+        date.setMonth(date.getMonth() + number * 3);
+        return date;
+        break;
+    }
+    case "M ": {
+        date.setMonth(date.getMonth() + number);
+        return date;
+        break;
+    }
+    case "w ": {
+        date.setDate(date.getDate() + number * 7);
+        return date;
+        break;
+    }
+    case "d ": {
+        date.setDate(date.getDate() + number);
+        return date;
+        break;
+    }
+    case "h ": {
+        date.setHours(date.getHours() + number);
+        return date;
+        break;
+    }
+    case "m ": {
+        date.setMinutes(date.getMinutes() + number);
+        return date;
+        break;
+    }
+    case "s ": {
+        date.setSeconds(date.getSeconds() + number);
+        return date;
+        break;
+    }
+    default: {
+        date.setDate(d.getDate() + number);
+        return date;
+        break;
+    }
+    }
+}
+
+</script>
+
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
