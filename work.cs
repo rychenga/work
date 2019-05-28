@@ -3480,5 +3480,33 @@ function DateAdd(interval, number, date) {
 </script>
 
 -------------------------------------------------------------------------
+https://dotblogs.com.tw/caubekimo/2010/08/09/17098
+https://social.msdn.microsoft.com/Forums/vstudio/zh-TW/ed830c39-563f-4c79-a023-28104179695e/save-an-entire-website-to-mht-using-c-and-trident-engine?forum=csharpgeneral
+
+1. Add COM in Reference
+this is the Microsoft CDO for Windows Library (C:\WINDOWS\System32\cdosys.dll)
+
+2. code：
+CDO.Message msg = new CDO.MessageClass();
+CDO.Configuration cfg = new CDO.ConfigurationClass(); 
+msg.Configuration = cfg;
+msg.CreateMHTMLBody("http://www.google.com", CDO.CdoMHTMLFlags.cdoSuppressAll, "", "");
+msg.GetStream().SaveToFile("c:\\text.mht", ADODB.SaveOptionsEnum.adSaveCreateOverWrite);
+
+private void button1_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(this.textBox1.Text))
+            {
+                DialogResult saveFileResult = this.saveFileDialog1.ShowDialog(this);
+                if (saveFileResult == System.Windows.Forms.DialogResult.OK)
+                {
+                    CDO.Message msg = new CDO.MessageClass();
+                    CDO.Configuration cfg = new CDO.ConfigurationClass();
+                    msg.Configuration = cfg;
+                    msg.CreateMHTMLBody(this.textBox1.Text, CDO.CdoMHTMLFlags.cdoSuppressAll, "", "");
+                    msg.GetStream().SaveToFile(this.saveFileDialog1.FileName, ADODB.SaveOptionsEnum.adSaveCreateOverWrite);
+                }
+            }
+        }
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
