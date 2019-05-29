@@ -3509,6 +3509,9 @@ private void button1_Click(object sender, EventArgs e)
             }
         }
 -------------------------------------------------------------------------
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<meta id="meta" http-equiv="content-type" content="text/html; charset=utf-8"> <--- 新增加這段
+
  static void Main(string[] args)
         {
             CDO.Message msg = new CDO.MessageClass();
