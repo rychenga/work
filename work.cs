@@ -3509,4 +3509,34 @@ private void button1_Click(object sender, EventArgs e)
             }
         }
 -------------------------------------------------------------------------
+ static void Main(string[] args)
+        {
+            CDO.Message msg = new CDO.MessageClass();
+            CDO.Configuration cfg = new CDO.ConfigurationClass();
+            msg.Configuration = cfg;
+            //msg.CreateMHTMLBody("http://wsbmesweb01/WebExam/Inspection/IQC_View.aspx?Factory=BUMP_SCT3&Lot_ID=AP95779.00", CDO.CdoMHTMLFlags.cdoSuppressAll, "", "");
+            //msg.GetStream().SaveToFile("D:\\demo\\saveFile\\text.html", ADODB.SaveOptionsEnum.adSaveCreateOverWrite);
+            string data = String.Empty;
+            ADODB.Stream stm = null;
+            try
+            {
+                msg.MimeFormatted = true;
+                //msg.CreateMHTMLBody("http://wsbmesweb01/WebExam/Inspection/IQC_View.aspx?Factory=BUMP_SCT3&Lot_ID=AP95779.00", CDO.CdoMHTMLFlags.cdoSuppressNone, "", "");
+                //msg.CreateMHTMLBody("http://wsbmesweb01/WebExam/Inspection/IQC_View.aspx?Factory=BUMP_SCT3&Lot_ID=AP95779.00", CDO.CdoMHTMLFlags.cdoSuppressAll, "", "");
+                msg.CreateMHTMLBody("http://localhost:3888/Inspection/IQC_View.aspx?Factory=BUMP_SCT3&Lot_ID=AT95127.00", CDO.CdoMHTMLFlags.cdoSuppressAll, "", "");
+                //msg.CreateMHTMLBody("http://www.google.com", CDO.CdoMHTMLFlags.cdoSuppressAll, "", "");
+                //msg.CreateMHTMLBody("http://portal/default.aspx", CDO.CdoMHTMLFlags.cdoSuppressAll, "", "");
+                stm = msg.GetStream();
+                data = stm.ReadText(stm.Size);
+                //msg.GetStream().SaveToFile("D:\\demo\\saveFile\\text.html", ADODB.SaveOptionsEnum.adSaveCreateOverWrite);
+                msg.GetStream().SaveToFile("D:\\demo\\saveFile\\text.mht", ADODB.SaveOptionsEnum.adSaveCreateOverWrite);
+
+                Console.ReadKey();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+-------------------------------------------------------------------------
 -------------------------------------------------------------------------
