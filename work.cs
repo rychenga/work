@@ -3542,4 +3542,116 @@ private void button1_Click(object sender, EventArgs e)
             }
 
 -------------------------------------------------------------------------
+開啟以後，就在你的專案中加入reference，
+加入以下四個dll，dll的位置就是在你安裝Emgu位置的bin底下：
+Emgu.CV.dll
+Emgu.CV.ML.dll
+Emgu.CV.UI.dll
+Emgu.Util.dll
+加入以後，請先儲存你的專案，
+儲存以後請在你安裝Emgu位置的bin底下找到兩個dll，
+opencv_core231.dll
+opencv_highgui231.dll
+把這兩個dll放置到你的專案的/bin/Debug/底下。
+因為Emgu.CV.dll會使用到上述兩個dll。
+
+將 Emgu.CV.UI.dll 加入工具箱內
+工具 -->選擇工具箱項目
+
+
+完成上述動作以後就開始寫code，
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+using Emgu.CV;
+using Emgu.CV.Structure;
+
+namespace demo1
+{
+    public partial class Form1 : Form
+    {
+        private Capture cap = null; //Webcam 物件
+
+        public Form1()
+        {
+            InitializeComponent();
+
+            cap = new Capture(); //連結到第一台攝影機
+            Application.Idle += new EventHandler(Application_Idle); //在Idle的event下，把畫面設定到 pictureBox上
+        }
+
+        void Application_Idle(object sender, EventArgs e)
+        {
+            Image<Bgr, Byte> frame = cap.QueryFrame(); //Query 攝影機的畫面
+            pictureBox1.Image = frame.ToBitmap(); // 把畫面轉換成bitmap型態，在丟給 pictureBox 元件
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";
+            saveFileDialog1.Title = "Save an Image File";
+            saveFileDialog1.ShowDialog();
+
+            #region test
+            //// If the file name is not an empty string open it for saving.  
+            //if (saveFileDialog1.FileName != "")
+            //{
+            //    // Saves the Image via a FileStream created by the OpenFile method.  
+            //    System.IO.FileStream fs = (System.IO.FileStream)saveFileDialog1.OpenFile();
+
+            //    // Saves the Image in the appropriate ImageFormat based upon the  
+            //    // File type selected in the dialog box.  
+            //    // NOTE that the FilterIndex property is one-based.  
+            //    switch (saveFileDialog1.FilterIndex)
+            //    {
+            //        case 1:
+            //            this.button1.Image.Save(fs,
+            //               System.Drawing.Imaging.ImageFormat.Jpeg);
+            //            break;
+
+            //        case 2:
+            //            this.button1.Image.Save(fs,
+            //               System.Drawing.Imaging.ImageFormat.Bmp);
+            //            break;
+
+            //        case 3:
+            //            this.button1.Image.Save(fs,
+            //               System.Drawing.Imaging.ImageFormat.Gif);
+            //            break;
+            //    }
+
+            //    fs.Close();
+            //}
+            #endregion test
+
+            if (saveFileDialog1.FileName != "")
+            {
+                pictureBox1.Image.Save(saveFileDialog1.FileName); //存檔
+            }
+
+
+
+        }
+
+
+
+
+    }
+}
+
 -------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+	-------------------------------------------------------------------------
