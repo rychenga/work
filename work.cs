@@ -3652,6 +3652,94 @@ namespace demo1
 }
 
 -------------------------------------------------------------------------
+[SQL] PIVOT 和 UNPIVOT
+說明：
+產生ㄧ個2維PIVOT來幫助自己，免的每次要用它還要重新理解ㄧ次。
+簡介：
+PIVOT 將資料行內資料的唯一值旋轉成多個資料行，並對數值型欄位進行彙總（直轉橫）。
+UNPIVOT則是跟PIVOT相反（橫轉直）。PS：資料行（Column）、資料列 （Row）。
+
+PIVOT 架構:
+SELECT GroupCol,[PivotCol資料1],[PivotCol資料2] -- 根據轉置欄位資料產生欄位
+    FROM
+        (
+          SELECT GroupCol,AggregationCol,PivotCol FROM SourceTable
+          -- 2.1 欲進行轉置的資料來源
+          -- 2.2 GroupCol（群組欄位） == Employee欄位
+          --     AggregationCol（彙總欄位） == Hours欄位
+          --     PivotCol（轉置欄位） == Kind欄位
+        ) AS p -- 別名不可省略
+    PIVOT
+        (
+          Aggregation(AggregationCol) FOR PivotCol IN ([PivotCol資料1],[PivotCol資料2]......)
+          -- 2.3 轉置後欄位（PivotCol資料1,PivotCol資料2），ㄧ定要用[]包起來，不可以用''
+          -- 2.4 PivotCol經轉置後，欄位即消失（改用PivotCol資料1,PivotCol資料2來呈現）         
+        ) AS pt -- 別名不可省略
+
+PIVOT T-SQL 語法說明:
+SELECT *
+    FROM
+        (
+          SELECT Employee,Kind,Hours 
+            FROM #PIVOT
+        ) AS p
+    PIVOT
+        (
+          SUM(Hours) FOR Kind IN ([事假],[病假],[公假],[陪產假])
+        ) AS pt
+ 
+-- OR
+SELECT *
+    FROM
+        (
+          SELECT Employee,Kind,SUM(Hours) AS Hours
+            FROM #PIVOT
+            GROUP BY Employee,Kind
+        ) AS p
+    PIVOT
+        (
+          SUM(Hours) FOR Kind IN ([事假],[病假],[公假],[陪產假])
+        ) AS pt
+  
+ -- 彙總函數搭配PIVOT，計算彙總欄位時不會考慮值為NULL的資料
+
+UNPIVOT 架構:
+SELECT *
+    FROM
+        (
+          Select GroupCol,col2,col3,col4........ FROM SourceTable
+          -- 3.1 欲進行反轉置的資料來源
+        ) AS p
+    UNPIVOT
+        (
+          ValueCol FOR unPivotCol IN (col2,col3,col4.........) -- ㄧ定要不包含群組欄位
+          -- 3.2 ValueCol 和 unPivotCol 為使用者自行命名的欄位名稱
+          -- 3.3 ValueCol 的資料為資料列（Row）資料轉成資料行（Column）資料（非群組欄位轉為ValueCol）
+          -- 3.4 unPivotCol 的資料為 col2欄位資料、col3欄位資料、col4欄位資料........
+        ) AS pv  
+
+UNPIVOT T-SQL 語法說明:
+SELECT *
+    FROM
+        (
+          Select Employee,事假,病假,公假,陪產假 FROM #UNPIVOT
+        ) AS p
+    UNPIVOT
+        (
+          Hours FOR Kind IN (事假,病假,公假,陪產假)
+        ) AS pv
+ 
+-- OR
+ 
+SELECT *
+    FROM #UNPIVOT AS p
+    UNPIVOT
+        (
+          Hours FOR Kind IN (事假,病假,公假,陪產假)
+        ) AS pv
+ 
+-- AAAAA的陪產假為NULL，UNPIVOT後，AAAAA的假別就不會有陪產假
+
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
-	-------------------------------------------------------------------------
+-------------------------------------------------------------------------
