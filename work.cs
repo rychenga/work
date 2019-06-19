@@ -3792,5 +3792,39 @@ UNPIVOT ( B FOR x2 IN (B01, B02, B03) )AS UnB
 WHERE RIGHT(x1, 1) = RIGHT(x2, 1)
 ;
 -------------------------------------------------------------------------
+沒有授權 ASP.NET 存取要求的資源。請考慮將資源存取權授與 ASP.NET 要求識別。ASP.NET 有一個基本處理序識別 (通常在 IIS 5 上為 {MACHINE}\ASPNET，在 IIS 6 上為 Network Service)，
+會在應用程式未模擬的情況下使用。如果應用程式是透過 <identity impersonate="true"/> 模擬，
+這個識別將會是匿名使用者 (通常為 IUSR_MACHINENAME) 或經過驗證的要求使用者。
+若要對檔案授與 ASP.NET 存取權，請在檔案總管中以滑鼠右鍵按一下檔案，選擇 [內容] 並選取 [安全] 索引標籤。按一下 [新增] 加入適當的使用者或群組。
+反白顯示 ASP.NET 帳戶，並且選取所需存取權限的核取方塊。
+
+解法參考：
+https://dotblogs.com.tw/shadow/2011/05/02/24043
+https://dotblogs.com.tw/gelis/archive/2010/12/25/20381.aspx
+
+由系統管理工具>元件服務>電腦>我的電腦>DCOM設定>在右方找到Microsoft Excel應用程式(Application)
+從系統管理工具—>[元件服務] 執行此時MMC是以x64來執行的，它會排除掉x32的DCOM伺服器，看不到Microsoft Excel Application
+如果找不到 Microsoft Excel應用程式(Application)可以透過 MMC 方式匯入 系統管理工具:
+C:\Users\sct3-mes>mmc comexp.msc /32
+C:\Users\sct3-mes>MMC /32  <--- 推
+
+IIS6:
+1. 右鍵>內容>頁籤安全設定，點選啟動和啟用權限>編輯
+2. 因為是IIS 6，所以新增一個Network Service帳戶，且四個權限全部勾選
+權限帳號list : 
+IIS_IUSRS
+IIS AppPool\.NET V2.0 CLASSIC
+NETWORK SERVICE
+
+IIS7:
+1. 右鍵>內容>頁籤安全設定，點選啟動和啟用權限>編輯
+權限帳號list : 
+IIS_IUSRS
+IIS AppPool\.NET V2.0 CLASSIC
+
+3.在C:\Windows\System32\config\systemprofile\底下建「Desktop」資料夾
+並加入以上三個帳號的權限，並有完全控制的權限
+
+4.在WINDOWS\TEMP下加入以上三個帳號的權限，並有完全控制的權限
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
