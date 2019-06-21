@@ -3827,4 +3827,14 @@ IIS AppPool\.NET V2.0 CLASSIC
 
 4.在WINDOWS\TEMP下加入以上三個帳號的權限，並有完全控制的權限
 -------------------------------------------------------------------------
+[Oracle index hint]
+https://kknews.cc/zh-tw/other/j54kk6.html
+http://www.xumenger.com/oracle-hint-20151124/
+https://www.askmaclean.com/archives/oracle-sql%E4%BC%98%E5%8C%96%E5%99%A8hint%E4%BB%8B%E7%BB%8D.htm
+
+//Oracle 紀錄使用CTE改善SQL效能案例
+https://oolamaru.wordpress.com/2017/03/29/oracle-tunning%e7%b4%80%e9%8c%84%e4%b8%80%e6%ac%a1%e4%bd%bf%e7%94%a8cte%e6%94%b9%e5%96%84sql%e6%95%88%e8%83%bd%e6%a1%88%e4%be%8b/
+https://oolamaru.wordpress.com/2017/04/07/oracle-%E4%BD%BF%E7%94%A8unpivot%E6%94%B9%E5%96%84sql%E6%95%88%E8%83%BD%E6%A1%88%E4%BE%8B/
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
 -------------------------------------------------------------------------
