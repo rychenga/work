@@ -3857,4 +3857,56 @@ if (e.KeyCode == Keys.Enter)
 ===========================
 Focus()指將焦點置於所在控制項上
 -------------------------------------------------------------------------
+[C#]-DataGridView 小技巧
+41431 0 [C#] 檢舉文章  2010-12-29
+摘要:[C#]-DataGridView 小技巧
+來源轉自:http://www.cnblogs.com/scottckt/archive/2007/10/09/917874.html
+
+1、設置DataGridView的欄位填充整個顯示區
+
+            //設置DataGridView的欄位填充整個顯示區
+            dgvMe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+2、調整欄位顯示位置到最後
+
+                //調整欄位顯示位置到最後
+                //dgvGroupAttr為DataGridView控件
+                dgvGroupAttr.Columns[3].DisplayIndex = 5;
+
+
+3、設定控件的欄位自動調整大小
+
+                    //設定控件的欄位自動調整大小
+                    //col:DataGridView控件
+                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+
+4、設定DataGridView中欄位的寬度
+
+            //設定DataGridView中欄位的寬度
+           dgvEntityHardware.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+           dgvEntityHardware.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+           dgvEntityHardware.Columns[0].Width = 110;
+
+ 	AllCells	資料行寬度會調整，以適合資料行中的所有儲存格的內容 (包括標題儲存格)。
+ 	AllCellsExceptHeader	資料行寬度會調整，以適合資料行中的所有儲存格的內容 (不包括標題儲存格)。  
+ 	ColumnHeader	資料行寬度會調整，以適合資料行行首儲存格的內容。  
+ 	DisplayedCells	資料行寬度會調整，以適合資料行中的所有儲存格的內容 (位在目前顯示在螢幕上的資料列中)，包括標題儲存格。  
+ 	DisplayedCellsExceptHeader	資料行寬度會調整，以適合資料行中的所有儲存格的內容 (位在目前顯示在螢幕上的資料列中)，不包括標題儲存格。  
+ 	Fill	資料行寬度會調整，使得所有資料行的寬度可以剛好填滿控制項的顯示區，且必須要使用水平捲動方式，才能讓資料行寬度維持在DataGridViewColumn.MinimumWidth  屬性值之上。相對的資料行寬度是由相對的  DataGridViewColumn.FillWeight 屬性值所決定。 
+ 	None	資料行寬度不會自動調整。 
+ 	NotSet	資料行的調整大小行為是繼承自 DataGridView.AutoSizeColumnsMode 屬性。
+
+5、得到DataGridView 當前行的位置
+
+            //dgvEtList是DataGridView控件
+            //得到DataGridView 當前行的位置
+            dgvEtList.CurrentRow.Index
+
+6. DataGridView.DataSource 更新
+dataGridView1.DataSource = null;
+dataGridView1.DataSource = itemStates;
+System.Threading.Thread.Sleep(500);
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
 -------------------------------------------------------------------------
