@@ -3908,5 +3908,12 @@ dataGridView1.DataSource = null;
 dataGridView1.DataSource = itemStates;
 System.Threading.Thread.Sleep(500);
 -------------------------------------------------------------------------
+C# WinForm CheckedBoxList 單選
+在CheckedBoxList  的 事件 ItemCheck
+if(e.NewValue == CheckState.Checked){
+
+   foreach (int i in checkedListBox1.CheckedIndices)
+                chkl.SetItemCheckState(i, CheckState.Unchecked);
+}
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
