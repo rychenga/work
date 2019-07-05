@@ -3552,6 +3552,7 @@ Emgu.Util.dll
 儲存以後請在你安裝Emgu位置的bin底下找到兩個dll，
 opencv_core231.dll
 opencv_highgui231.dll
+opencv_imgproc231.dll
 把這兩個dll放置到你的專案的/bin/Debug/底下。
 因為Emgu.CV.dll會使用到上述兩個dll。
 
@@ -3917,6 +3918,54 @@ if(e.NewValue == CheckState.Checked){
 }
 -------------------------------------------------------------------------
 http://zedgraph.sourceforge.net/samples.html
+-------------------------------------------------------------------------
+using Emgu.CV;
+using Emgu.CV.Structure;
+
+private Capture cap = null; //Webcam 物件
+
+1.開啟攝影機
+cap = new Capture(0); //連結到第一台攝影機
+cap.SetCaptureProperty(Emgu.CV.CvEnum.CAP_PROP.CV_CAP_PROP_FRAME_WIDTH, 640);   //設定影像的長
+cap.SetCaptureProperty(Emgu.CV.CvEnum.CAP_PROP.CV_CAP_PROP_FRAME_HEIGHT, 480);  //設定影像的寬
+cap.SetCaptureProperty(Emgu.CV.CvEnum.CAP_PROP.CV_CAP_PROP_AUTO_EXPOSURE, 0);
+Application.Idle += new EventHandler(Application_Idle); //在Idle的event下，把畫面設定到 pictureBox上
+
+1.1 Idle_function
+void Application_Idle(object sender, EventArgs e)
+{
+
+    try
+    {
+        Image<Bgr, Byte> frame = cap.QueryFrame(); //Query 攝影機的畫面
+        pictureBox1.Image = frame.ToBitmap(); // 把畫面轉換成bitmap型態，在丟給 pictureBox 元件
+    }
+    catch (Exception ex)
+    {
+        
+        throw;
+    }
+
+}
+
+2.  開關攝影機 功能
+
+//cap = null;
+//cap..Stop(); EMGU.CV 2.3.0 沒有此功能
+cap.Dispose(); //關掉攝影機
+Application.Idle -= Application_Idle; //關掉在Idle的event.
+pictureBox1.Image = null; //關掉 picturebox
+
+3. 儲存功能
+private Size size = new Size(4096, 2160);
+
+//pictureBox1.Image.Save(saveFileDialog1.FileName); //存檔
+//frame.Save(saveFileDialog1.FileName); //存檔
+//frame.ToBitmap().Save(saveFileDialog1.FileName); //存檔
+//cap.QueryFrame().ToBitmap(size.Width,size.Height).Save(saveFileDialog1.FileName); //存檔
+//cap.QueryFrame().ToBitmap(1920, 1080).Save(saveFileDialog1.FileName); //存檔
+cap.QueryFrame().ToBitmap(4096, 2160).Save(saveFileDialog1.FileName); //存檔
+
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
