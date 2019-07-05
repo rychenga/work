@@ -3967,5 +3967,11 @@ private Size size = new Size(4096, 2160);
 cap.QueryFrame().ToBitmap(4096, 2160).Save(saveFileDialog1.FileName); //存檔
 
 -------------------------------------------------------------------------
+https://csharp.hotexamples.com/examples/Emgu.CV/Capture/SetCaptureProperty/php-capture-setcaptureproperty-method-examples.html
+https://stackoverflow.com/questions/1179532/how-do-i-pass-command-line-arguments-to-a-winforms-application
+https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/main-and-command-args/command-line-arguments
+http://blueweite.blogspot.com/2016/06/c-winform_29.html
+https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/arrays/single-dimensional-arrays
+
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
