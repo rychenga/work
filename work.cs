@@ -3966,6 +3966,10 @@ private Size size = new Size(4096, 2160);
 //cap.QueryFrame().ToBitmap(1920, 1080).Save(saveFileDialog1.FileName); //存檔
 cap.QueryFrame().ToBitmap(4096, 2160).Save(saveFileDialog1.FileName); //存檔
 
+//Image newPic = new Bitmap(frame.ToBitmap(), 640, 480); //調整大小
+Image newPic = new Bitmap(frame.ToBitmap(), size.Width, size.Height); //調整大小
+//pictureBox1.Image = frame.ToBitmap(); // 把畫面轉換成bitmap型態，在丟給 pictureBox 元件
+pictureBox1.Image = newPic; // 把畫面轉換成bitmap型態，在丟給 pictureBox 元件
 -------------------------------------------------------------------------
 https://csharp.hotexamples.com/examples/Emgu.CV/Capture/SetCaptureProperty/php-capture-setcaptureproperty-method-examples.html
 https://stackoverflow.com/questions/1179532/how-do-i-pass-command-line-arguments-to-a-winforms-application
