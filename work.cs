@@ -3978,4 +3978,12 @@ http://blueweite.blogspot.com/2016/06/c-winform_29.html
 https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/arrays/single-dimensional-arrays
 
 -------------------------------------------------------------------------
+//datagridview 過濾
+https://codeday.me/bug/20170714/41358.html
+//(dataGridViewFields.DataSource as DataTable).DefaultView.RowFilter = string.Format("Field = '{0}'", textBoxFilter.Text);
+(dataGridView3.DataSource as DataTable).DefaultView.RowFilter = string.Format("PRODUCT_CODE LIKE '%{0}%'", text_PRODUCT_CODE.Text);
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
 -------------------------------------------------------------------------
