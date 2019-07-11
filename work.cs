@@ -3980,6 +3980,7 @@ https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/arrays/single-d
 -------------------------------------------------------------------------
 //datagridview 過濾
 https://codeday.me/bug/20170714/41358.html
+//(dataGridView3.DataSource as DataTable).DefaultView.RowFilter = string.Empty; //清空過濾條件
 //(dataGridViewFields.DataSource as DataTable).DefaultView.RowFilter = string.Format("Field = '{0}'", textBoxFilter.Text);
 (dataGridView3.DataSource as DataTable).DefaultView.RowFilter = string.Format("PRODUCT_CODE LIKE '%{0}%'", text_PRODUCT_CODE.Text);
 -------------------------------------------------------------------------
