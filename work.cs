@@ -4000,6 +4000,97 @@ AND  HEAD.TRANSACTION_TYPE = 'START'
 AND HEAD.STATUS = 2 )PD,MSTAR_TPRF_TESTER_INFO TPRF
 WHERE PD.PRODUCT_CODE=TPRF.PRODUCT_CODE )L  WHERE NOT EXISTS (SELECT 1 FROM MSTAR_CP_KEY CP WHERE L.FROM_LOT_NO = CP.LOT_NO AND L.WAFER_ID = CP.WAFER_ID)
 -------------------------------------------------------------------------
+:: Oracle 日期運算函數 
+ 
+ ADD_MONTHS(d,n) 
+ --時間點d再加上n個月 
+ 
+ ex. 
+ select sysdate, add_months(sysdate,2) aa from dual; 
+ 
+ SYSDATE AA 
+ ---------- ---------- 
+ 21-SEP-07 21-NOV-07 
+ 
+ LAST_DAY(d) 
+ --時間點d當月份最後一天 
+ 
+ ex. 
+ select sysdate, LAST_DAY(sysdate) LAST_DAY from dual; 
+ 
+ SYSDATE LAST_DAY 
+ ---------- --------- 
+ 21-SEP-07 30-SEP-07 
+ 
+ NEXT_DAY(d,number) 
+ --◎ 時間點d開始，下一個星期幾的日期 
+ --◎ 星期日 = 1 星期一 = 2 星期二 = 3 
+ -- 星期三 = 4 星期四 = 5 星期五 = 6 星期六 = 7 
+ 
+ ex. 
+ select sysdate, NEXT_DAY(sysdate,2) aa from dual; 
+ 
+ SYSDATE AA 
+ ---------- ---------- 
+ 21-SEP-07 24-SEP-07 
+ 
+ MONTHS_BETWEEN(d1,d2) 
+ --計算d1與d2相隔的月數 
+ 
+ ex. 
+ select trunc(MONTHS_BETWEEN(to_date('20071101','yyyymmdd'), 
+ to_date('20070820','yyyymmdd'))) aa 
+ from dual; 
+ 
+ AA 
+ ---------- 
+ 2 
+ 
+ NEW_TIME(d,c1,c2) 
+ --轉換新時區 
+ 
+ ex. 
+ select to_char(sysdate,'YYYY/MM/DD HH24:MI:SS') 台北, 
+ to_char(NEW_TIME(sysdate,'EST','GMT'),'YYYY/MM/DD HH24:MI:SS') 格林威治 
+ from dual; 
+ 
+ 台北 格林威治 
+ -------------------- ------------------- 
+ 2007/09/21 14:36:53 2007/09/21 19:36:53 
+ 
+ ROUND(d[,fmt]) 
+ --◎ 對日期作四捨五入運算 
+ --◎ 月的四捨五入以每月的15號為基準 
+ --◎ 年的四捨五入以每年6月為基準 
+ 
+ ex. 
+ select sysdate, ROUND(sysdate,'year') aa from dual; 
+ 
+ SYSDATE AA 
+ ---------- ---------- 
+ 21-SEP-07 01-JAN-08 
+ 
+ select sysdate, ROUND(sysdate,'month') aa from dual; 
+ 
+ SYSDATE AA 
+ ---------- ---------- 
+ 21-SEP-07 01-OCT-07 
+ 
+ TRUNC(d[,fmt]) 
+ --對日期作擷取運算 
+ 
+ ex. 
+ select sysdate, TRUNC(sysdate,'year') aa from dual; 
+ 
+ SYSDATE AA 
+ ---------- ---------- 
+ 21-SEP-07 01-JAN-07 
+ 
+ select sysdate, TRUNC(sysdate,'month') aa from dual; 
+ 
+ SYSDATE AA 
+ ---------- ---------- 
+ 21-SEP-07 01-SEP-07 
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
