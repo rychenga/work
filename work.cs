@@ -4092,5 +4092,221 @@ WHERE PD.PRODUCT_CODE=TPRF.PRODUCT_CODE )L  WHERE NOT EXISTS (SELECT 1 FROM MSTA
  ---------- ---------- 
  21-SEP-07 01-SEP-07 
 -------------------------------------------------------------------------
+::20190920
+
+新增一個Panel控制元件，命名pel；再在Panel控制元件中新增一個PictureBox控制元件，命名pboImage
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+using Emgu.CV;
+using Emgu.CV.Structure;
+
+namespace demo1
+{
+    public partial class Form1 : Form
+    {
+        private Capture cap = null; //Webcam 物件
+        private System.Drawing.Point MouseDownPoint = new System.Drawing.Point();//平移時滑鼠按下的位置
+        private bool IsSelected = false;//滑鼠是否是按下狀態
+
+
+
+        public Form1()
+        {
+            InitializeComponent();
+
+            //cap = new Capture(); //連結到第一台攝影機
+            //Application.Idle += new EventHandler(Application_Idle); //在Idle的event下，把畫面設定到 pictureBox上
+
+            this.pel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pel.SizeChanged += new System.EventHandler(this.pel_SizeChanged);
+
+            this.pboImage.Margin = new System.Windows.Forms.Padding(0);
+            this.pboImage.Location = new System.Drawing.Point(0, 0);
+            this.pboImage.Size = new System.Drawing.Size(this.pel.Width, this.pel.Height);
+            this.pboImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pboImage.Cursor = Cursors.SizeAll;
+            this.pboImage.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pboImage_MouseDown);
+            this.pboImage.MouseEnter += new System.EventHandler(this.pboImage_MouseEnter);
+            this.pboImage.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pboImage_MouseMove);
+            this.pboImage.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pboImage_MouseUp);
+            this.pboImage.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.pboImage_MouseWheel);
+            pboImage.Image = Image.FromFile("D:\\demo\\webCam\\T3.jpg");
+
+        }
+
+        void Application_Idle(object sender, EventArgs e)
+        {
+            //Image<Bgr, Byte> frame = cap.QueryFrame(); //Query 攝影機的畫面
+            //pictureBox1.Image = frame.ToBitmap(); // 把畫面轉換成bitmap型態，在丟給 pictureBox 元件
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+
+
+        }
+
+
+
+        //pboImage獲取焦點事件
+        private void pboImage_MouseEnter(object sender, EventArgs e)
+        {
+            pboImage.Focus();
+        }
+
+        //pboImage滑鼠滾輪事件
+        private void pboImage_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (pboImage.Image == null) return;
+
+            //計算縮放後的錨點和寬高
+            int i = e.Delta * SystemInformation.MouseWheelScrollLines / 4;
+            int left = pboImage.Left - i / 2, top = pboImage.Top - i / 2;
+            int width = pboImage.Width + i, heigth = pboImage.Height + i;
+
+            if (i < 0)//縮小時需要考慮與顯示範圍間關係，放大時無需考慮
+            {
+                //計算縮放後圖片有效範圍
+                double WidthScale = Convert.ToDouble(pboImage.Image.Width) / width;
+                double HeigthScale = Convert.ToDouble(pboImage.Image.Height) / heigth;
+                if (WidthScale > HeigthScale)
+                {
+                    top = top + Convert.ToInt32(Math.Ceiling(heigth - (pboImage.Image.Height / WidthScale))) / 2;
+                    heigth = Convert.ToInt32(Math.Ceiling(pboImage.Image.Height / WidthScale));
+                }
+                else
+                {
+                    left = left + Convert.ToInt32(Math.Ceiling(width - (pboImage.Image.Width / HeigthScale))) / 2;
+                    width = Convert.ToInt32(Math.Ceiling(pboImage.Image.Width / HeigthScale));
+                }
+
+                if (left > 0)//左側在顯示範圍內部，調整到左邊界
+                {
+                    if (width - left < pel.Width) width = pel.Width;
+                    else width = width - left;
+                    left = 0;
+                }
+                if (left + width < pel.Width)//右側在顯示範圍內部，調整到右邊界
+                {
+                    if (pel.Width - width > 0) left = 0;
+                    else left = pel.Width - width;
+                    width = pel.Width - left;
+                }
+
+                if (top > 0)//上側在顯示範圍內部，調整到上邊界
+                {
+                    if (heigth - top < pel.Height) heigth = pel.Height;
+                    else heigth = heigth - top;
+                    top = 0;
+                }
+                if (top + heigth < pel.Height)//下側在顯示範圍內部，調整到下邊界
+                {
+                    if (pel.Height - heigth > 0) top = 0;
+                    else top = pel.Height - heigth;
+                    heigth = pel.Height - top;
+                }
+            }
+
+            pboImage.Width = width;
+            pboImage.Height = heigth;
+            pboImage.Left = left;
+            pboImage.Top = top;
+        }
+
+        //pboImage滑鼠按下事件
+        private void pboImage_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (pboImage.Image == null) return;
+
+            if (e.Button == MouseButtons.Left)
+            {
+                //記錄摁下點座標，作為平移原點
+                MouseDownPoint.X = PointToClient(System.Windows.Forms.Cursor.Position).X;
+                MouseDownPoint.Y = PointToClient(System.Windows.Forms.Cursor.Position).Y;
+                IsSelected = true;
+                pboImage.Cursor = Cursors.Hand;
+            }
+        }
+
+        //pboImage滑鼠移動事件
+        private void pboImage_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (pboImage.Image == null) return;
+
+            //計算圖片有效範圍
+            double WidthScale = Convert.ToDouble(pboImage.Image.Width) / pboImage.Width;
+            double HeigthScale = Convert.ToDouble(pboImage.Image.Height) / pboImage.Height;
+            int InvalidTop = pboImage.Top, InvalidHeigth = pboImage.Height, InvalidLeft = pboImage.Left, InvalidWidth = pboImage.Width;
+            if (WidthScale > HeigthScale)
+            {
+                InvalidTop = InvalidTop + ((int)Math.Ceiling(InvalidHeigth - (pboImage.Image.Height / WidthScale))) / 2;
+                InvalidHeigth = (int)Math.Ceiling(pboImage.Image.Height / WidthScale);
+            }
+            else
+            {
+                InvalidLeft = InvalidLeft + ((int)Math.Ceiling(InvalidWidth - (pboImage.Image.Width / HeigthScale))) / 2;
+                InvalidWidth = (int)Math.Ceiling(pboImage.Image.Width / HeigthScale);
+            }
+
+            //滑鼠是否摁在圖片上
+            bool IsMouseInPanel = InvalidLeft < PointToClient(System.Windows.Forms.Cursor.Position).X &&
+            PointToClient(System.Windows.Forms.Cursor.Position).X < InvalidLeft + InvalidWidth &&
+            InvalidTop < PointToClient(System.Windows.Forms.Cursor.Position).Y &&
+            PointToClient(System.Windows.Forms.Cursor.Position).Y < InvalidTop + InvalidHeigth;
+            if (IsSelected && IsMouseInPanel)
+            {
+                //計算平移後圖片有效範圍的錨點和寬高
+                int left = InvalidLeft + (PointToClient(System.Windows.Forms.Cursor.Position).X - MouseDownPoint.X);
+                int top = InvalidTop + (PointToClient(System.Windows.Forms.Cursor.Position).Y - MouseDownPoint.Y);
+                int right = left + InvalidWidth;
+                int down = top + InvalidHeigth;
+
+                if (left >= InvalidLeft && left >= 0) left = 0; //向右平移且平移後在顯示範圍內部，調整到左邊界
+                if (left < InvalidLeft && right <= pel.Width) left = left + pel.Width - right;//向左平移且平移後在顯示範圍內部，調整到右邊界
+                if (top >= InvalidTop && top >= 0) top = 0;//向下平移且平移後在顯示範圍內部，調整到上邊界
+                if (top < InvalidTop && down <= pel.Height) top = top + pel.Height - down;//向上平移且平移後在顯示範圍內部，調整到下邊界
+
+                //有效範圍錨點換算到整體的錨點
+                left = left + pboImage.Left - InvalidLeft;
+                top = top + pboImage.Top - InvalidTop;
+
+                if (InvalidLeft <= 0) pboImage.Left = left;
+                if (InvalidTop <= 0) pboImage.Top = top;
+
+                //記錄摁下點座標，作為平移原點
+                MouseDownPoint.X = PointToClient(System.Windows.Forms.Cursor.Position).X;
+                MouseDownPoint.Y = PointToClient(System.Windows.Forms.Cursor.Position).Y;
+            }
+        }
+
+        //pboImage滑鼠彈起事件
+        private void pboImage_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (pboImage.Image == null) return;
+            IsSelected = false;
+            pboImage.Cursor = Cursors.SizeAll;
+        }
+
+        //pel大小改變事件
+        private void pel_SizeChanged(object sender, EventArgs e)
+        {
+            pboImage.Left = 0;
+            pboImage.Top = 0;
+            pboImage.Width = pel.Width;
+            pboImage.Height = pel.Height;
+        }
+
+
+
+
+    }
+}
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
