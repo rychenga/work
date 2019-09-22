@@ -4311,3 +4311,39 @@ namespace demo1
 -------------------------------------------------------------------------
 https://blog.csdn.net/u011981242/article/details/52622923
 -------------------------------------------------------------------------
+IP*Works! Bluetooth:
+https://www.codeproject.com/Articles/1230376/Getting-Started-with-Bluetooth-Low-Energy-BLE-an
+
+license:
+https://www.codeproject.com/info/cpol10.aspx
+
+
+https://github.com/juhanak/BleClient
+https://github.com/Microsoft/Windows-universal-samples
+https://social.msdn.microsoft.com/Forums/zh-TW/4a52cd99-bebd-49bb-8a2e-6045cb9d6ff1/24819355312183921508203012282322823263773836426044ble?forum=233
+
+https://docs.microsoft.com/zh-tw/windows/uwp/devices-sensors/gatt-client
+
+https://www.cnblogs.com/freeliver54/p/9999436.html
+https://blog.csdn.net/YSSJZ960427031/article/details/50990372
+
+InTheHand.Net.Personal.dll:
+https://www.cnblogs.com/freeliver54/p/9999436.html
+https://blog.csdn.net/YSSJZ960427031/article/details/50990372
+https://social.msdn.microsoft.com/Forums/zh-TW/f27bc0e4-974c-450c-b242-d7a4ebbb2054/-inthehand?forum=233
+https://forums.ni.com/t5/Measurement-Studio-for-NET/InTheHand-Net-Personal-dll-crashesh-my-LabVIEW-2017/td-p/3747181?profile.language=en
+https://www.twblogs.net/a/5b8a1be12b71775d1ce57986
+
+
+WINDOWS API:
+https://msdn.microsoft.com/zh-tw/windows/desktop/mt243896
+https://docs.microsoft.com/zh-tw/windows/uwp/devices-sensors/gatt-client
+
+
+windows UWP
+https://docs.microsoft.com/zh-tw/windows/uwp/devices-sensors/gatt-client
+https://samtsai.org/2017/05/12/148-calling-uwp-api-in-desktop-app/
+https://bbs.csdn.net/topics/392166201
+
+
+-------------------------------------------------------------------------
