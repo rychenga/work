@@ -4349,5 +4349,7 @@ https://bbs.csdn.net/topics/392166201
 -------------------------------------------------------------------------
 https://social.msdn.microsoft.com/Forums/en-US/3496fb5a-f328-4f21-84ab-cffa9575bc4b/windowsdevicesbluetoothdll-in-c-winforms?forum=csharpgeneral
 https://stackoverflow.com/questions/46729280/bluetooth-scan-c-sharp
+https://developer.microsoft.com/zh-tw/windows/downloads/windows-10-sdk
+https://developer.microsoft.com/zh-tw/windows/downloads/sdk-archive
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
