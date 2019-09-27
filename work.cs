@@ -4352,4 +4352,10 @@ https://stackoverflow.com/questions/46729280/bluetooth-scan-c-sharp
 https://developer.microsoft.com/zh-tw/windows/downloads/windows-10-sdk
 https://developer.microsoft.com/zh-tw/windows/downloads/sdk-archive
 -------------------------------------------------------------------------
+https://stackoverflow.com/questions/44099401/frombluetoothaddressasync-iasyncoperation-does-not-contain-a-definition-for-get
+To await an IAsyncOperation, you need two things:
+
+A reference to C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5\System.Runtime.WindowsRuntime.dll
+A reference to C:\Program Files (x86)\Windows Kits\10\UnionMetadata\Facade\Windows.WinMD
+	
 -------------------------------------------------------------------------
