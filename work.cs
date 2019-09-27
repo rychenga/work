@@ -4352,6 +4352,7 @@ https://stackoverflow.com/questions/46729280/bluetooth-scan-c-sharp
 https://developer.microsoft.com/zh-tw/windows/downloads/windows-10-sdk
 https://developer.microsoft.com/zh-tw/windows/downloads/sdk-archive
 -------------------------------------------------------------------------
+https://code-examples.net/zh-TW/q/2a243fb	
 https://stackoverflow.com/questions/44099401/frombluetoothaddressasync-iasyncoperation-does-not-contain-a-definition-for-get
 To await an IAsyncOperation, you need two things:
 
