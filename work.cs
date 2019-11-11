@@ -4360,3 +4360,22 @@ A reference to C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.
 A reference to C:\Program Files (x86)\Windows Kits\10\UnionMetadata\Facade\Windows.WinMD
 	
 -------------------------------------------------------------------------
+[SQL] Oracle listagg 串聯多筆成一筆
+
+我要將訂單明細串成一筆資料顯示，Oracle 11g R2 才支援。
+
+OrderNo	OrderSeq	Item	Price
+A01	1	口香糖	10
+A01	2	茶葉蛋	8
+A02	1	香菸	80
+A02	2	報紙	10
+
+select OrderNo, listagg(Item, ',') within group (OrderSeq) as ItemList
+from Order
+group by OrderNo
+OrderNo	ItemList
+A01	口香糖,茶葉蛋
+A02	香菸,報紙
+
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
