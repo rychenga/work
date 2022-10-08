@@ -4,10 +4,15 @@ work log
 平常學習及工作日誌
 
 ::工具清單
+
 XLiuDev-0914 (偽嘸蝦)
+
 PLSQL Developer (SQL TOOL)
+
 Notepad++ (npp.7.7.1 看code)
+
 UEDIT32 (文字處理)
+
 PicPickPortable (截圖)
 FileSeek (掃code)
 TextDiff (比對檔案)
