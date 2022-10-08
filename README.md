@@ -4,15 +4,10 @@ work log
 平常學習及工作日誌
 
 ::工具清單
-
 XLiuDev-0914 (偽嘸蝦)
-
 PLSQL Developer (SQL TOOL)
-
 Notepad++ (npp.7.7.1 看code)
-
 UEDIT32 (文字處理)
-
 PicPickPortable (截圖)
 FileSeek (掃code)
 TextDiff (比對檔案)
@@ -25,7 +20,6 @@ Winscp
 DoroSetup213
 VisualCron
 Toad_9.7.2.5(SQL TOOL)
-
 ::********************************************************************************
 【Golang】
 GoLand ($$)
@@ -36,7 +30,6 @@ smart git
 GitKraken($$)
 Source Tree
 Fork
-
 TortoiseGit
 https://backlog.com/git-tutorial/tw/intro/intro1_1.html
 
