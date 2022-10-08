@@ -4,6 +4,7 @@ work log
 平常學習及工作日誌
 
 ::工具清單
+
 XLiuDev-0914 (偽嘸蝦)
 
 PLSQL Developer (SQL TOOL)
