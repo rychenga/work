@@ -1,0 +1,12 @@
+{
+  "folders": [
+   { "path": "docs" }
+   ,{ "path": "logger" }
+   ,{ "path": "logs" }
+   ,{ "path": "middleware" }
+   ,{ "path": "models" }
+  ],
+  "settings": {
+    "continue.experimental.debugMode": true
+  }
+}

@@ -67,13 +67,20 @@
           "*.log",
           "**/dist/**"
         ],
-        "maxFiles": 200,
-        "maxCharacters": 120000,
-        "prioritizeRecent": true,
-        "recursive": true
+        "maxFiles": 200, // 增加文件上限以支持大型專案
+        "maxCharacters": 120000, // 增加字符限制以涵蓋更多內容
+        "nRetrieve": 50, // 提高初步檢索數量
+        "nFinal": 15, // 提高最終上下文數量
+        "useReranking": true, // 啟用重新排序以提升準確性
+        "prioritizeRecent": true, // 優先處理最近修改的文件
+        "recursive": true // 確保遞歸掃描所有子目錄
       }
     }
   ],
+  "embeddingsProvider": {
+    "provider": "ollama",
+    "model": "nomic-embed-text" // 確保嵌入模型與代碼庫索引一致
+  },
   "slashCommands": [
     {
       "name": "share",
