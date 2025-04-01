@@ -1,0 +1,96 @@
+{
+  "models": [
+    {
+      "title": "qwen2.5-coder:7b",
+      "provider": "ollama",
+      "model": "qwen2.5-coder:7b-instruct",
+      "baseUrl": "http://localhost:11434"
+    }
+  ],
+  "tabAutocompleteModel": {
+    "title": "qwen2.5-coder:7b",
+    "provider": "ollama",
+    "model": "qwen2.5-coder:7b-instruct"
+  },
+  "contextProviders": [
+    {
+      "name": "code",
+      "params": {}
+    },
+    {
+      "name": "docs",
+      "params": {}
+    },
+    {
+      "name": "diff",
+      "params": {}
+    },
+    {
+      "name": "terminal",
+      "params": {}
+    },
+    {
+      "name": "problems",
+      "params": {}
+    },
+    {
+      "name": "folder",
+      "params": {}
+    },
+    {
+      "name": "codebase",
+      "params": {
+        "include": [
+          "**/*.go",
+          "**/*.cs",
+          "**/*.ts",
+          "**/*.js",
+          "**/*.py",
+          "**/*.cpp",
+          "**/*.c",
+          "**/*.h",
+          "**/*.java",
+          "**/*.json",
+          "**/*.yml",
+          "**/*.sql",
+          "**/*.proto"
+        ],
+        "exclude": [
+          "node_modules/**",
+          "vendor/**",
+          ".git/**",
+          "build/**",
+          "obj/**",
+          "bin/**",
+          "*.dll",
+          "*.exe",
+          "*.log",
+          "**/dist/**"
+        ],
+        "maxFiles": 200,
+        "maxCharacters": 120000,
+        "prioritizeRecent": true,
+        "recursive": true
+      }
+    }
+  ],
+  "slashCommands": [
+    {
+      "name": "share",
+      "description": "Scan and summarize the entire @codebase including all subdirectories",
+      "template": "Analyze the @codebase, list all detected files across all subdirectories, summarize their purpose, and suggest improvements."
+    },
+    {
+      "name": "cmd",
+      "description": "Generate a full API project (Golang/C#) from @codebase",
+      "template": "Generate a complete API with CRUD, tests, and docs for {{language}} based on @codebase, including all subdirectories."
+    },
+    {
+      "name": "commit",
+      "description": "Generate a git commit message"
+    }
+  ],
+  "systemMessage": "You are a senior backend developer with 15+ years of experience in Golang and C#. Specialize in Clean Architecture, database optimization (PostgreSQL, MongoDB), and DevOps. Analyze the @codebase thoroughly, including all subdirectories, use best practices, and return code in separate files with detailed comments using the latest language versions (Go 1.22, C# 12).",
+  "customPromptFile": "prompt-template.md",
+  "data": []
+}
