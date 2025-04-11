@@ -78,8 +78,8 @@
     }
   ],
   "embeddingsProvider": {
-    "provider": "ollama",
-    "model": "nomic-embed-text" // 確保嵌入模型與代碼庫索引一致
+    "provider": "transformers.js",
+    "model": "xenova/all-MiniLM-L6-v2" // 嵌入模型
   },
   "slashCommands": [
     {
