@@ -53,7 +53,8 @@
           "**/*.json",
           "**/*.yml",
           "**/*.sql",
-          "**/*.proto"
+          "**/*.proto",
+          "**/*.md"
         ],
         "exclude": [
           "node_modules/**",
