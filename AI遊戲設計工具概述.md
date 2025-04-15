@@ -1,5 +1,3 @@
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" class="logo" width="120"/>
-
 ## AI遊戲設計工具概述
 
 以下是一些目前市場上流行的AI遊戲設計工具，這些工具能幫助遊戲開發者快速創建遊戲，生成資產，並簡化設計流程。
