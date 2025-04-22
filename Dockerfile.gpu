@@ -1,0 +1,40 @@
+# DeOldify Docker file
+# 使用 CUDA 11.8 runtime（對應你的 GPU 環境）
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 安裝 OS 依賴 + CUDA 工具包（協助 GPU 被 PyTorch 偵測）
+RUN apt-get update && apt-get install -y \
+    python3.10 python3.10-dev python3.10-venv python3-pip \
+    build-essential git ffmpeg wget \
+    libgl1 libglib2.0-0 libsm6 libxext6 \
+    nvidia-cuda-toolkit \
+    && rm -rf /var/lib/apt/lists/*
+
+# 設定預設 Python 版本為 3.10
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
+
+# 升級 pip
+RUN pip3 install --upgrade pip
+
+# 安裝 PyTorch + torchvision（CUDA 11.8 版本，支援 CUDA 11.8 驅動）
+RUN pip3 install torch==2.0.1+cu118 torchvision==0.15.2+cu118 --extra-index-url https://download.pytorch.org/whl/cu118
+
+# 安裝其他 AI 影像處理相關套件
+RUN pip3 install fastai==2.7.12 jupyterlab matplotlib opencv-python numpy==1.24.4 ffmpeg-python yt-dlp
+
+# Clone DeOldify 專案
+RUN git clone https://github.com/jantic/DeOldify.git /workspace
+WORKDIR /workspace
+
+# 下載模型
+RUN mkdir -p models && \
+    wget https://data.deepai.org/deoldify/ColorizeArtistic_gen.pth -P ./models
+
+# 複製 CLI 腳本 colorize.py（需與 Dockerfile 同資料夾）
+COPY colorize.py /workspace/colorize.py
+
+# 預設啟動指令：使用 colorize.py 執行整個 input ➜ output 上色流程
+CMD ["python3", "/workspace/colorize.py", "--render_factor", "35", "--input_path", "/app/input", "--output_path", "/app/output"]
+
