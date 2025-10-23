@@ -1,0 +1,39 @@
+name: Local Agent
+version: 1.0.0
+schema: v1
+models:
+  - name: Qwen2.5-coder:7b
+    provider: ollama
+    model: qwen2.5-coder:7b-instruct
+    roles:
+      - chat
+      - edit
+      - apply
+  - name: Qwen2.5-Coder 7b
+    provider: ollama
+    model: qwen2.5-coder:7b-instruct
+    roles:
+      - autocomplete
+  - name: Nomic Embed
+    provider: ollama
+    model: nomic-embed-text:latest
+    roles:
+      - embed
+# --- 新增：讓聊天可用 @code / @repo-map ---
+context:
+  - provider: code
+  - provider: repo-map
+    params:
+      includeSignatures: true     # 顯示函式/類別簽名，利於總覽
+      maxFiles: 200            # 大專案可放寬（可選）
+      maxCharacters: 120000  # 增加字符限制以涵蓋更多內容
+      nRetrieve: 50            # 提高初步檢索數量
+      nFinal: 15               # 提高最終上下文數量
+      useReranking: true     # 啟用重排序以提升相關性
+      prioritizeRecent: true # 優先考慮最近修改的文件
+      recursive: true        # 遞歸包含子目錄
+
+
+# （可選）專案規則檔，幫模型理解你的目錄/慣例
+# rules:
+#   - uses: file://.continue/rules/architecture.md

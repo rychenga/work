@@ -1,0 +1,108 @@
+name: Local Agent
+version: 1.0.0
+schema: v1
+
+models:
+  - name: Qwen2.5-coder:7b
+    provider: ollama
+    model: qwen2.5-coder:7b-instruct
+    roles: [chat, edit, apply]
+    options:
+      num_ctx: 131072
+  - name: Qwen2.5-Coder 7b
+    provider: ollama
+    model: qwen2.5-coder:7b-instruct
+    roles: [autocomplete]
+    options:
+      num_ctx: 65536
+  - name: Nomic Embed
+    provider: ollama
+    model: nomic-embed-text:latest
+    roles: [embed]
+
+systemMessage: >
+  你是一位專業的程式碼分析專家。請使用繁體中文回答並保留原始術語。
+  當分析 API（如 login）時，務必提供完整實作細節、精準路徑/方法、
+  請求/回應結構與狀態碼、middleware/安全控管、依賴關係與教學範例，
+  並以步驟描述整體請求到回應流程。
+
+context:
+  - provider: code
+
+  - provider: repo-map
+    params:
+      includeSignatures: true
+      maxFiles: 200
+      maxCharacters: 120000
+      nRetrieve: 50
+      nFinal: 15
+      useReranking: true        # 需要下方 reranker 區塊
+      prioritizeRecent: true
+      recursive: true
+
+  - provider: codebase
+    params:
+      nRetrieve: 50
+      nFinal: 20
+      minContentLength: 80
+      useReranking: true        # 需要下方 reranker 區塊
+      prioritizeRecent: true
+
+indexing:
+  embeddings:
+    provider: ollama
+    model: nomic-embed-text:latest
+  include:
+    - "**/*.go"
+    - "**/*.ts"
+    - "**/*.tsx"
+    - "**/*.js"
+    - "**/*.py"
+    - "**/*.cs"
+    - "**/*.java"
+    - "**/*.proto"
+    - "**/*.graphql"
+    - "README.md"
+    - "docs/**/*.md"
+  exclude:
+    - "node_modules/**"
+    - ".git/**"
+    - "dist/**"
+    - "build/**"
+    - "out/**"
+    - "coverage/**"
+    - "**/*.min.js"
+    - "**/*.map"
+
+# ← 新增的 reranker（本機）
+reranker:
+  provider: ollama
+  model: bge-m3
+
+slashCommands:
+  - name: scan-login-api
+    description: 定位並拆解 login API（路由/方法/中介層/驗證/資料結構/依賴/教學/流程）
+    useCodebase: true
+    prompt: |
+      請在整個代碼庫搜尋並彙整所有與 login 相關的 API（包含 Web/Mobile/Admin 變體）：
+      1) 定位：列出檔案與路由宣告、handler/controller、service、repo、middlewares、auth 模組。
+      2) 路徑分析：每個端點的 URL pattern 與 HTTP 方法。
+      3) 實作細節：逐一解釋 handler/controller，指出使用的中介層（auth/rate limit/CORS/CSRF/RBAC/2FA）、加密/簽章/雜湊、輸入驗證。
+      4) 資料結構：請求參數（path/query/body/headers）與回應格式（JSON、狀態碼）；若有錯誤 payload 也列出。
+      5) 依賴關係：handler → service → repo → DB/Redis/OAuth/OIDC/JWT/外部服務 的呼叫鏈。
+      6) 使用教學：輸出可直接運行的呼叫範例（curl、HTTPie、JavaScript fetch、Python requests、Go http）。
+      7) 執行流程：以步驟分解從接收請求到回應的時序（驗證/授權/存取/錯誤攔截）。
+      8) 若找不到明確 login 端點，請回傳候選清單（檔案/行號/關鍵字）並提供下一步追查策略。
+      請用表格與分段清單輸出；多個端點請分組顯示差異。
+
+  - name: deep-folder
+    description: 深入分析目前選取的資料夾（路由/中介層/DTO/Service/Repo/第三方）
+    prompt: |
+      對選取資料夾，建立端點清單表：
+      | 方法 | 路徑 | 檔案 | Handler | Middlewares | 回應模型 | 備註 |
+      並彙整：DTO/驗證、service/repo 依賴、第三方服務；標註 TODO/風險。
+
+  - name: explain-snippet
+    description: 解釋選取的程式片段在請求流程中的角色與依賴
+    prompt: |
+      說明此片段在何處被呼叫、輸入/輸出、與哪些 middleware/service/repo 互動、錯誤/例外處理、是否存取機敏資料或使用加密/簽章；必要時列出上下游函式與檔案路徑。
