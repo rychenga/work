@@ -1,0 +1,182 @@
+name: Local Agent Optimized
+version: 1.0.0
+schema: v1
+
+models:
+  # —— 主推理模型（Chat, Edit, Apply）——
+  # 用於邏輯、重構、Chat 和您所有的斜線指令。
+  - name: Qwen2.5-coder:7b-Instruct
+    provider: ollama
+    model: qwen2.5-coder:7b-instruct
+    roles: [chat, edit, apply]
+    apiBase: http://localhost:11434
+    contextLength: 16384  # 保持 16k 上下文限制
+    options:
+      num_ctx: 16384
+      temperature: 0.6
+      num_gpu: 999        # 提示 Ollama 優先使用 GPU
+
+  # —— 高速補全模型（Autocomplete）——
+  # 專用於 Tab Autocomplete，速度是 7B 的數倍，且 VRAM 佔用極小 (~1GB)。
+  - name: Qwen2.5-Coder 1.5B (Fast Autocomplete)
+    provider: ollama
+    model: qwen2.5-coder:1.5b-base # 【重要修正】替換為 1.5B 模型
+    roles: [autocomplete]
+    apiBase: http://localhost:11434
+    contextLength: 4096
+    options:
+      num_ctx: 4096
+      temperature: 0.2
+      num_gpu: 999
+
+# 審稿模型移除，其邏輯已整合到 systemMessage 和 slashCommands 中
+
+systemMessage: >
+  你是一位專業的程式碼分析專家。請使用繁體中文回答並保留原始術語。
+  當分析 API（如 login）時，務必提供完整實作細節、精準路徑/方法、
+  請求/回應結構與狀態碼、middleware/安全控管、依賴關係與教學範例，
+  並以步驟描述整體請求到回應流程。
+  You are a senior backend developer with 15+ years of experience in Golang and C# and Python.
+  Specialize in Clean Architecture, database optimization (PostgreSQL, MongoDB), and DevOps. Analyze the @codebase thoroughly,
+  including all subdirectories, use best practices,
+  and return code in separate files with detailed comments using the latest language versions (Go 1.22, C# 12).
+
+  # 自我驗證規範（每次回答必備）
+  - 產出「驗證日誌」：列出查閱檔案與關鍵片段的路徑與行數/函式，並簡述選用理由。
+  - 產出「引用與證據」：將每項結論對應至具體檔案與行數/函式名。
+  - 產出「假設與不確定性」：列出推論假設、風險與仍需確認之處。
+  - 若為 API/端點，務必提供「測試步驟」：curl/HTTPie/JavaScript fetch/Python requests/Go http 可直接運行的範例與預期狀態碼。
+  - 若發現矛盾資訊，新增「矛盾解析」：優先較新且語境貼近的檔案，並解釋取捨。
+  - 若資料不足，提供「下一步追查策略」：關鍵字、目標資料夾、可能 Owner。
+
+context:
+  - provider: code
+  - provider: repo-map
+    params:
+      includeSignatures: true
+      maxFiles: 400
+      maxCharacters: 240000
+      nRetrieve: 80
+      nFinal: 25
+      useReranking: false
+      prioritizeRecent: true
+      recursive: true
+
+  - provider: codebase
+    params:
+      nRetrieve: 80
+      nFinal: 30
+      minContentLength: 80
+      useReranking: false
+      prioritizeRecent: true
+
+indexing:
+  embeddings:
+    provider: ollama
+    model: nomic-embed-text # 【重要修正】替換為 Ollama 本地模型，速度更快
+    apiBase: http://localhost:11434
+  include:
+    # Backend / 系統語言
+    - "**/*.go"
+    - "**/*_test.go"
+    - "**/*.cs"      # C#
+    - "**/*.c"       # C
+    - "**/*.cpp"     # C++
+    - "**/*.h"       # C / C++ header
+    - "**/*.hpp"     # C++ header
+
+    # Web / 前端
+    - "**/*.ts"
+    - "**/*.tsx"
+    - "**/*.js"
+    - "**/*.jsx"
+    - "**/*.vue"     # Vue 單檔元件
+
+    # Script / Shell / Batch
+    - "**/*.py"
+    - "**/*.sh"
+    - "**/*.bash"
+    - "**/*.awk"     # AWK 腳本
+    - "**/*.bat"     # Windows batch
+    - "**/*.cmd"     # Windows command script（如不需要可刪掉這行）
+
+    # SQL / DB
+    - "**/*.sql"
+
+    # Protocol / Schema
+    - "**/*.proto"
+    - "**/*.graphql"
+    - "**/*.xml"
+
+    # Config / Docs
+    - "**/*.yaml"
+    - "**/*.yml"
+    - "**/*.json"
+    - "README.md"
+    - "docs/**/*.md"
+    - "api/**/*.md"
+    - "test/**/*.md"
+    # ... (其他檔案包含規則保持不變)
+  exclude:
+    - "node_modules/**"
+    - ".git/**"
+    - "dist/**"
+    # ... (其他檔案排除規則保持不變)
+
+slashCommands:
+  # self-check 指令的提示詞非常優秀，保持不變，它會使用您唯一的 Qwen 7B 進行兩階段推理。
+  - name: self-check
+    description: 兩階段（草稿→審稿）生產答案，並強制輸出驗證日誌/引用/假設/測試/矛盾解析
+    useCodebase: true
+    prompt: |
+      # 階段 A：草稿（以草稿模型思維）
+      你是「草稿作者」。請根據使用者問題與可用上下文產生初稿。
+      嚴格遵循 systemMessage 的「自我驗證規範」，務必輸出：
+      - 驗證日誌
+      - 引用與證據（檔案路徑與行號/函式）
+      - 假設與不確定性
+      - 測試步驟（若涉及 API/端點）
+      - 矛盾解析（若有）
+      - 下一步追查策略（若資料不足）
+
+      # 階段 B：審稿（以嚴格審稿者思維）
+      你是「嚴格審稿者」。請逐點比對代碼庫證據，檢查：
+      - 事實檢核：每項主張皆有明確檔案與行數/函式對應；避免引用過時檔。
+      - 邏輯檢核：流程能串起 handler → service → repo → DB/外部服務。
+      - 安全檢核：認證/授權/輸入驗證/速率限制/CSRF/CORS/RBAC/JWT 失效機制是否考量完整。
+      - 測試可操作性：範例可直接運行；狀態碼與錯誤負載一致。
+      - 反例思考：列出可能矛盾的檔案並解析取捨。
+      最終輸出：
+      - 《最終答案》（修正後完整稿）
+      - 《審查差異清單》（指出修正與理由）
+      - 《驗證日誌 / 引用與證據 / 假設與不確定性 / 測試步驟 / 矛盾解析》
+
+  - name: scan-login-api
+    description: 定位並拆解 login API（路由/方法/中介層/驗證/資料結構/依賴/教學/流程）
+    useCodebase: true
+    prompt: |
+      請在整個代碼庫搜尋並彙整所有與 login 相關的 API（包含 Web/Mobile/Admin 變體）：
+      1) 定位：列出檔案與路由宣告... (Prompt 保持不變)
+
+  - name: deep-folder
+    description: 深入分析目前選取的資料夾（路由/中介層/DTO/Service/Repo/第三方）
+    useCodebase: true
+    prompt: |
+      對選取資料夾，建立端點清單表... (Prompt 保持不變)
+
+  - name: explain-snippet
+    description: 解釋選取的程式片段在請求流程中的角色與依賴
+    useCodebase: true
+    prompt: |
+      說明此片段在何處被呼叫、輸入/輸出... (Prompt 保持不變)
+
+prompts:
+  - name: "嚴格模式（驗證日誌+引用）"
+    description: 任何問題都以自我驗證格式作答
+    prompt: |
+      使用 systemMessage 的規範，並強制輸出：
+      1) 驗證日誌
+      2) 引用與證據（檔案路徑與行號/函式）
+      3) 假設與不確定性
+      4) 測試步驟（若涉及 API/端點）
+      5) 矛盾解析（若有）
